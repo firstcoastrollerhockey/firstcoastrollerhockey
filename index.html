@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>First Coast Roller Hockey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:   #0a1628;
+    --navy2:  #112240;
+    --blue:   #1a4fa0;
+    --ice:    #d6eaf8;
+    --orange: #e85d04;
+    --orange2:#f48c06;
+    --white:  #f5f7fa;
+    --muted:  #8fa4c2;
+    --border: rgba(214,234,248,0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem;
+    background: rgba(10,22,40,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.06em;
+    color: var(--white);
+    text-decoration: none;
+    line-height: 1;
+  }
+  .nav-logo span { color: var(--orange); }
+  nav a.nav-cta {
+    background: var(--orange);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.55rem 1.3rem;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  nav a.nav-cta:hover { background: var(--orange2); }
+
+  /* ── HERO ── */
+  header {
+    position: relative;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    padding: 6rem 2rem 4rem;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(214,234,248,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(214,234,248,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-glow {
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,79,160,0.35) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .rink-lines {
+    position: absolute;
+    width: 100%; height: 100%;
+    top: 0; left: 0;
+    pointer-events: none;
+    opacity: 0.06;
+  }
+  .hero-inner {
+    position: relative; z-index: 2;
+    max-width: 820px;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 1.2rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: '';
+    display: block;
+    width: 40px; height: 1px;
+    background: var(--orange);
+    opacity: 0.6;
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 9vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+  }
+  h1 em {
+    font-style: normal;
+    color: var(--orange);
+  }
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 560px;
+    margin: 1.4rem auto 2.4rem;
+  }
+  .hero-actions {
+    display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;
+  }
+  .btn-primary {
+    background: var(--orange);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.85rem 2.2rem;
+    border-radius: 4px;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--orange2); transform: translateY(-2px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--ice);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.85rem 2.2rem;
+    border-radius: 4px;
+    border: 1px solid rgba(214,234,248,0.25);
+    transition: border-color 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+  .btn-secondary:hover { border-color: var(--ice); transform: translateY(-2px); }
+
+  /* ── SECTION BASE ── */
+  section { padding: 6rem 2rem; }
+  .container { max-width: 1040px; margin: 0 auto; }
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 0.8rem;
+  }
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    line-height: 1;
+    letter-spacing: 0.03em;
+    color: var(--white);
+    margin-bottom: 1.2rem;
+  }
+  .section-intro {
+    font-size: 1.1rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 600px;
+    margin-bottom: 3rem;
+  }
+
+  /* ── ABOUT ── */
+  #about { background: var(--navy2); }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  .feature-card {
+    background: rgba(26,79,160,0.12);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.6rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .feature-card:hover { border-color: rgba(232,93,4,0.4); transform: translateY(-3px); }
+  .feature-icon {
+    width: 44px; height: 44px;
+    border-radius: 8px;
+    background: rgba(232,93,4,0.15);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+  }
+  .feature-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+  .feature-card p { font-size: 0.92rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── VISION ── */
+  #vision { background: var(--navy); }
+  .vision-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  @media (max-width: 700px) { .vision-grid { grid-template-columns: 1fr; gap: 2rem; } }
+  .vision-stat-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+  .stat-box {
+    background: rgba(26,79,160,0.14);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.4rem 1rem;
+    text-align: center;
+  }
+  .stat-box .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.6rem;
+    color: var(--orange);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    display: block;
+  }
+  .stat-box .label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    display: block;
+  }
+
+  /* ── FAQ ── */
+  #faq { background: var(--navy2); }
+  .faq-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 0.5rem; }
+  .faq-item {
+    background: rgba(26,79,160,0.1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .faq-q {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 1.4rem;
+    text-align: left;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .faq-q .arrow {
+    font-size: 1.1rem;
+    transition: transform 0.25s;
+    color: var(--orange);
+    flex-shrink: 0;
+    margin-left: 1rem;
+  }
+  .faq-item.open .arrow { transform: rotate(180deg); }
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s;
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.7;
+    padding: 0 1.4rem;
+  }
+  .faq-item.open .faq-a { max-height: 300px; padding: 0 1.4rem 1.2rem; }
+
+  /* ── FORM ── */
+  #interest {
+    background: var(--navy);
+    border-top: 1px solid var(--border);
+  }
+  .form-wrap {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 3rem;
+    max-width: 680px;
+  }
+  @media (max-width: 600px) { .form-wrap { padding: 2rem 1.4rem; } }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 540px) { .form-row { grid-template-columns: 1fr; } }
+  .field { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.1rem; }
+  .field label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .field input, .field select, .field textarea {
+    background: rgba(10,22,40,0.7);
+    border: 1px solid rgba(214,234,248,0.15);
+    border-radius: 6px;
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.98rem;
+    padding: 0.75rem 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .field input::placeholder, .field textarea::placeholder { color: rgba(143,164,194,0.5); }
+  .field select option { background: var(--navy2); color: var(--white); }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: rgba(26,79,160,0.8);
+    box-shadow: 0 0 0 3px rgba(26,79,160,0.2);
+  }
+  .field textarea { resize: vertical; min-height: 100px; }
+  .checkbox-group { display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 1.4rem; }
+  .checkbox-label {
+    display: flex; align-items: center; gap: 0.7rem;
+    font-size: 0.93rem; color: var(--white);
+    cursor: pointer;
+  }
+  .checkbox-label input[type="checkbox"] {
+    width: 18px; height: 18px;
+    accent-color: var(--orange);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .form-note { font-size: 0.8rem; color: var(--muted); margin-top: 0.8rem; line-height: 1.5; }
+  #submit-btn {
+    width: 100%;
+    background: var(--orange);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 6px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    margin-top: 0.5rem;
+  }
+  #submit-btn:hover { background: var(--orange2); transform: translateY(-2px); }
+  #submit-btn:active { transform: translateY(0); }
+  #success-msg {
+    display: none;
+    background: rgba(26,160,100,0.12);
+    border: 1px solid rgba(26,160,100,0.35);
+    border-radius: 8px;
+    padding: 1.4rem 1.6rem;
+    text-align: center;
+    color: #5dcaa5;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin-top: 1.2rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #060e1a;
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  footer strong {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.06em;
+    color: var(--white);
+  }
+  footer a { color: var(--orange); text-decoration: none; }
+
+  /* ── PUCK DIVIDER ── */
+  .divider {
+    display: flex; align-items: center; justify-content: center;
+    gap: 1rem;
+    margin: 0 auto 3rem;
+    max-width: 300px;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(214,234,248,0.15));
+  }
+  .divider::after { background: linear-gradient(to left, transparent, rgba(214,234,248,0.15)); }
+  .puck { width: 14px; height: 10px; border-radius: 5px; background: var(--orange); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-inner > * {
+    animation: fadeUp 0.7s ease both;
+  }
+  .hero-eyebrow  { animation-delay: 0.05s; }
+  h1             { animation-delay: 0.15s; }
+  .hero-sub      { animation-delay: 0.28s; }
+  .hero-actions  { animation-delay: 0.4s;  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">First Coast <span>Roller Hockey</span></a>
+  <a href="#interest" class="nav-cta">Express Interest</a>
+</nav>
+
+<!-- HERO -->
+<header>
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <!-- Subtle rink center-circle SVG -->
+  <svg class="rink-lines" viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <circle cx="600" cy="350" r="260" fill="none" stroke="#d6eaf8" stroke-width="2"/>
+    <circle cx="600" cy="350" r="12" fill="none" stroke="#e85d04" stroke-width="3"/>
+    <line x1="600" y1="0" x2="600" y2="700" stroke="#d6eaf8" stroke-width="1.5"/>
+    <rect x="60" y="220" width="160" height="260" rx="30" fill="none" stroke="#d6eaf8" stroke-width="1.5"/>
+    <rect x="980" y="220" width="160" height="260" rx="30" fill="none" stroke="#d6eaf8" stroke-width="1.5"/>
+    <rect x="0" y="0" width="1200" height="700" rx="60" fill="none" stroke="#d6eaf8" stroke-width="3"/>
+  </svg>
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Coming to Jacksonville, FL</p>
+    <h1>First Coast<br/><em>Roller Hockey</em></h1>
+    <p class="hero-sub">
+      Northeast Florida's first dedicated inline &amp; roller hockey facility — bringing year-round leagues, open skate, and elite training to our community. Help us make it happen.
+    </p>
+    <div class="hero-actions">
+      <a href="#interest" class="btn-primary">Express Your Interest</a>
+      <a href="#about" class="btn-secondary">Learn More</a>
+    </div>
+  </div>
+</header>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <p class="section-label">What We're Building</p>
+    <h2>A Facility Built for the Game</h2>
+    <p class="section-intro">
+      First Coast Roller Hockey is a community-driven project to establish a permanent, professional-grade roller hockey destination in the Jacksonville area. No more driving hours for ice time or making do with parking lots.
+    </p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🏒</div>
+        <h3>Regulation Rink</h3>
+        <p>Full-size sport court surface designed specifically for inline and roller hockey play.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <h3>Year-Round Leagues</h3>
+        <p>Adult and youth leagues across skill levels — beginner to competitive — with structured seasons and playoffs.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎓</div>
+        <h3>Training & Clinics</h3>
+        <p>Skill development programs, skating clinics, goalie training, and youth development camps.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛼</div>
+        <h3>Open Skate</h3>
+        <p>Public skate sessions for the whole family — no hockey experience required to enjoy the rink.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏬</div>
+        <h3>Pro Shop</h3>
+        <p>On-site equipment sales, rentals, skate sharpening, and gear customization.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🤝</div>
+        <h3>Community Space</h3>
+        <p>Locker rooms, spectator seating, a lounge area, and room for tournaments and events.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISION -->
+<section id="vision">
+  <div class="container">
+    <div class="vision-grid">
+      <div>
+        <p class="section-label">Why Jacksonville</p>
+        <h2>The First Coast Deserves This</h2>
+        <p style="color: var(--muted); line-height: 1.75; font-size: 1rem; margin-bottom: 1.2rem;">
+          The Jacksonville metro is one of the fastest-growing regions in the Southeast — and one of the only major markets without a dedicated roller hockey facility. Our players travel to Orlando or Tampa just to find competitive games.
+        </p>
+        <p style="color: var(--muted); line-height: 1.75; font-size: 1rem;">
+          We're changing that. With your support and demonstrated community interest, we can move forward with securing a location, locking in financing, and breaking ground. Every registration matters.
+        </p>
+      </div>
+      <div class="vision-stat-block">
+        <div class="stat-box">
+          <span class="num">1.6M</span>
+          <span class="label">Metro Population</span>
+        </div>
+        <div class="stat-box">
+          <span class="num">0</span>
+          <span class="label">Dedicated Facilities</span>
+        </div>
+        <div class="stat-box">
+          <span class="num">~2hr</span>
+          <span class="label">Drive to Nearest Rink</span>
+        </div>
+        <div class="stat-box">
+          <span class="num">Phase 1</span>
+          <span class="label">Building Interest Now</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <p class="section-label">Questions &amp; Answers</p>
+    <h2>Frequently Asked</h2>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Where exactly will the facility be located?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          We are currently in the site-selection phase. Location decisions will be informed by community interest data — which is exactly why your registration matters. We are evaluating several areas in and around Jacksonville, prioritizing accessibility for the greatest number of players.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          When will the facility open?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          We are in Phase 1 (community interest gathering). Once we hit our interest targets, we will move into site selection and financing (Phase 2), then construction and buildout (Phase 3). We are aiming to have a firm timeline to share with registered community members within the next 12 months.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Does expressing interest cost anything?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          Absolutely not. Filling out the interest form is completely free and does not commit you to any purchase or membership. It simply tells us you want this facility to happen and helps us build the case for investors and partners.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          I've never played roller hockey. Is this for me?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          Yes! We plan to welcome players of all skill levels — from complete beginners and families who want to recreational skate, to experienced players looking for competitive leagues. Learn-to-skate and beginner hockey programs will be a core part of what we offer.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How can I stay updated on progress?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">
+          Fill out the interest form below and check the box to join our mailing list. Registered community members will be the first to receive updates on location announcements, timeline, founding membership opportunities, and league registration.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- INTEREST FORM -->
+<section id="interest">
+  <div class="container">
+    <p class="section-label">Get Involved</p>
+    <h2>Express Your Interest</h2>
+    <p class="section-intro">
+      Your registration directly supports our ability to move this project forward. Tell us about yourself so we can build a facility that truly fits the First Coast hockey community.
+    </p>
+    <div class="form-wrap">
+      <form id="interest-form" onsubmit="handleSubmit(event)" novalidate>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="first">First Name *</label>
+            <input type="text" id="first" name="first" placeholder="Jamie" required />
+          </div>
+          <div class="field">
+            <label for="last">Last Name *</label>
+            <input type="text" id="last" name="last" placeholder="Smith" required />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required />
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone Number (optional)</label>
+          <input type="tel" id="phone" name="phone" placeholder="(904) 555-0100" />
+        </div>
+
+        <div class="field">
+          <label for="zip">ZIP Code *</label>
+          <input type="text" id="zip" name="zip" placeholder="32256" required maxlength="10" />
+        </div>
+
+        <div class="field">
+          <label for="role">How would you use the facility? *</label>
+          <select id="role" name="role" required>
+            <option value="" disabled selected>Select the best fit…</option>
+            <option>Adult league player</option>
+            <option>Youth / parent registering a child</option>
+            <option>Recreational / open skate</option>
+            <option>Coach or team organizer</option>
+            <option>Interested in training programs</option>
+            <option>Multiple of the above</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="experience">Your hockey experience level</label>
+          <select id="experience" name="experience">
+            <option value="" disabled selected>Select one…</option>
+            <option>Never played — want to learn</option>
+            <option>Beginner (under 2 years)</option>
+            <option>Intermediate (2–5 years)</option>
+            <option>Advanced / competitive</option>
+            <option>Registering for a child / not applicable</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>I'm interested in (check all that apply)</label>
+          <div class="checkbox-group" style="margin-top:0.4rem;">
+            <label class="checkbox-label"><input type="checkbox" name="interest" value="adult-leagues" /> Adult Leagues</label>
+            <label class="checkbox-label"><input type="checkbox" name="interest" value="youth-leagues" /> Youth Leagues</label>
+            <label class="checkbox-label"><input type="checkbox" name="interest" value="open-skate" /> Open / Recreational Skate</label>
+            <label class="checkbox-label"><input type="checkbox" name="interest" value="clinics" /> Skills Clinics &amp; Training</label>
+            <label class="checkbox-label"><input type="checkbox" name="interest" value="membership" /> Founding Membership (when available)</label>
+            <label class="checkbox-label"><input type="checkbox" name="interest" value="tournaments" /> Tournaments &amp; Events</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="comments">Anything else you'd like us to know?</label>
+          <textarea id="comments" name="comments" placeholder="Tell us about your team, your kids, what would make this facility perfect for you…"></textarea>
+        </div>
+
+        <label class="checkbox-label" style="margin-bottom:1.2rem;">
+          <input type="checkbox" name="subscribe" value="yes" checked />
+          Keep me updated on First Coast Roller Hockey progress and announcements
+        </label>
+
+        <button type="submit" id="submit-btn">Submit Interest Form →</button>
+
+        <div id="success-msg">
+          ✓ Thank you! You're officially on the list. We'll be in touch as the project moves forward.
+        </div>
+        <p class="form-note">
+          Your information is kept private and will never be sold or shared. By submitting, you agree to receive occasional updates about this project.
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>First Coast Roller Hockey</strong></p>
+  <p style="margin-top:0.6rem;">Jacksonville, Florida &nbsp;·&nbsp; <a href="mailto:info@firstcoastrollerhockey.com">info@firstcoastrollerhockey.com</a></p>
+  <p style="margin-top:0.8rem; font-size:0.78rem; opacity:0.6;">© 2025 First Coast Roller Hockey. All rights reserved.</p>
+</footer>
+
+<script>
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+function handleSubmit(e) {
+  e.preventDefault();
+  const form = e.target;
+
+  const first = form.first.value.trim();
+  const last  = form.last.value.trim();
+  const email = form.email.value.trim();
+  const zip   = form.zip.value.trim();
+  const role  = form.role.value;
+
+  if (!first || !last || !email || !zip || !role) {
+    alert('Please fill in all required fields (marked with *).');
+    return;
+  }
+  if (!/^\S+@\S+\.\S+$/.test(email)) {
+    alert('Please enter a valid email address.');
+    return;
+  }
+
+  // ── INTEGRATION POINT ──────────────────────────────────────────
+  // To actually collect responses, replace this section with one
+  // of the options described in the README:
+  //   Option A — Formspree:  POST to https://formspree.io/f/YOUR_ID
+  //   Option B — Netlify Forms: add netlify attribute to <form>
+  //   Option C — Google Sheets via Apps Script endpoint
+  // ───────────────────────────────────────────────────────────────
+
+  document.getElementById('submit-btn').disabled = true;
+  document.getElementById('submit-btn').textContent = 'Submitted!';
+  document.getElementById('success-msg').style.display = 'block';
+  form.reset();
+  document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+
+</body>
+</html>
