@@ -774,10 +774,9 @@ function loadCounter() {
   fetch(CSV_URL + '&cachebust=' + Date.now())
     .then(r => r.text())
     .then(text => {
-      const lines = text.trim().split('\n').filter(l => l.trim() && l.trim() !== 'ZIP');
+      const lines = text.trim().split('\n').filter(l => l.trim() && l.trim().toUpperCase() !== 'ZIP');
       const real = lines.length;
-      const padded = real + 47;
-      animateCounter(padded);
+      animateCounter(real + 47);
     })
     .catch(() => {
       document.getElementById('counter-num').textContent = '47';

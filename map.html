@@ -521,62 +521,70 @@ function loadData() {
         }
       });
 
-      // Seed demo data if no real data yet so map isn't empty
-      const hasData = Object.keys(zipCounts).length > 0;
-      if (!hasData) {
-        const demoZips = ['32256','32225','32259','32092','32084','32086','32081','32218','32246','32257','32073','32065','32034','32080','32095','32224','32223','32250','32211','32205'];
-        demoZips.forEach(z => { zipCounts[z] = Math.max(1, Math.floor(Math.random() * 4) + 1); });
+      const realTotal = rows.length;
+      const realZips  = Object.keys(zipCounts).length;
+
+      // If no real data yet, show demo dots so map isn't empty
+      // but do NOT count them in the stats
+      const displayCounts = Object.assign({}, zipCounts);
+      if (realZips === 0) {
+        const demoZips = ['32256','32225','32259','32092','32084','32086',
+          '32081','32218','32246','32257','32073','32065','32034',
+          '32080','32095','32224','32223','32250','32211','32205'];
+        demoZips.forEach(z => { displayCounts[z] = 1; });
       }
 
       // Clear old circles
       circles.forEach(c => c.setMap(null));
       circles = [];
 
-      let totalSignups = 0;
       let topZip = '';
       let topCount = 0;
 
-      Object.entries(zipCounts).forEach(([zip, count]) => {
+      Object.entries(displayCounts).forEach(([zip, count]) => {
         const coords = ZIP_COORDS[zip];
         if (!coords) return;
 
-        totalSignups += count;
-        if (count > topCount) { topCount = count; topZip = zip; }
+        if (zipCounts[zip] && zipCounts[zip] > topCount) {
+          topCount = zipCounts[zip];
+          topZip = zip;
+        }
 
+        const isDemo = !zipCounts[zip];
         const circle = new google.maps.Circle({
           strokeColor: '#e85d04',
-          strokeOpacity: 0.9,
+          strokeOpacity: isDemo ? 0.3 : 0.9,
           strokeWeight: 1.5,
           fillColor: '#e85d04',
-          fillOpacity: 0.35,
+          fillOpacity: isDemo ? 0.1 : 0.35,
           map: map,
           center: { lat: coords[0], lng: coords[1] },
           radius: dotSize(count)
         });
 
-        const infoWindow = new google.maps.InfoWindow({
-          content: `<div style="background:#112240;color:#f5f7fa;padding:10px 14px;border-radius:6px;font-family:sans-serif;font-size:13px;border:1px solid rgba(232,93,4,0.3);">
-            <strong style="font-size:15px;color:#e85d04;">${zip}</strong><br/>
-            <span style="color:#8fa4c2;">${count} ${count === 1 ? 'person' : 'people'} signed up</span>
-          </div>`
-        });
-
-        circle.addListener('click', () => {
-          infoWindow.setPosition({ lat: coords[0], lng: coords[1] });
-          infoWindow.open(map);
-        });
+        if (!isDemo) {
+          const infoWindow = new google.maps.InfoWindow({
+            content: `<div style="background:#112240;color:#f5f7fa;padding:10px 14px;border-radius:6px;font-family:sans-serif;font-size:13px;border:1px solid rgba(232,93,4,0.3);">
+              <strong style="font-size:15px;color:#e85d04;">${zip}</strong><br/>
+              <span style="color:#8fa4c2;">${count} ${count === 1 ? 'person' : 'people'} signed up</span>
+            </div>`
+          });
+          circle.addListener('click', () => {
+            infoWindow.setPosition({ lat: coords[0], lng: coords[1] });
+            infoWindow.open(map);
+          });
+        }
 
         circles.push(circle);
       });
 
-      const padded = totalSignups + 47;
-      animateStat('stat-total', padded, false);
-      animateStat('stat-zips', Object.keys(zipCounts).length, false);
+      // Stats show real numbers + 47 padding
+      animateStat('stat-total', realTotal + 47, false);
+      animateStat('stat-zips',  realZips,  false);
       animateStat('stat-top-zip', topZip || '—', true);
 
       document.getElementById('map-loading').style.display = 'none';
 
-      // Refresh every 60 seconds
       setTimeout(loadData, 60000);
     })
     .catch(err => {
