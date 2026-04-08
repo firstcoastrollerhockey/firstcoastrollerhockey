@@ -637,7 +637,7 @@
       Every person on this list is a founding voice in what First Coast Roller Hockey becomes. Tell us who you are and what you're looking for — we're listening, and your answers will shape every decision we make.
     </p>
     <div class="form-wrap">
-      <form id="interest-form" onsubmit="handleSubmit(event)" novalidate>
+      <form id="interest-form" action="https://formspree.io/f/mqegjezd" method="POST">
 
         <div class="form-row">
           <div class="field">
@@ -714,9 +714,6 @@
 
         <button type="submit" id="submit-btn">Count Me In →</button>
 
-        <div id="success-msg">
-          ✓ You're in! Welcome to the First Coast Roller Hockey community. We'll be in touch as we build this thing together.
-        </div>
         <p class="form-note">
           Your info stays with us — it will never be sold or shared with third parties. This is a community project, not a marketing list.
         </p>
@@ -732,54 +729,11 @@
   <p style="margin-top:0.8rem; font-size:0.78rem; opacity:0.6;">© 2025 First Coast Roller Hockey. All rights reserved.</p>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 function toggleFaq(btn) {
   const item = btn.closest('.faq-item');
   const isOpen = item.classList.contains('open');
   document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
   if (!isOpen) item.classList.add('open');
 }
-
-function handleSubmit(e) {
-  e.preventDefault();
-  const form = e.target;
-
-  const first = form.first.value.trim();
-  const last  = form.last.value.trim();
-  const email = form.email.value.trim();
-  const zip   = form.zip.value.trim();
-  const role  = form.role.value;
-
-  if (!first || !last || !email || !zip || !role) {
-    alert('Please fill in all required fields (marked with *).');
-    return;
-  }
-  if (!/^\S+@\S+\.\S+$/.test(email)) {
-    alert('Please enter a valid email address.');
-    return;
-  }
-
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Sending…';
-
-  fetch('https://formspree.io/f/mqegjezd', {
-    method: 'POST',
-    body: new FormData(form),
-    headers: { 'Accept': 'application/json' }
-  }).then(function(res) {
-    if (res.ok) {
-      document.getElementById('success-msg').style.display = 'block';
-      form.reset();
-      document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    } else {
-      btn.disabled = false;
-      btn.textContent = 'Count Me In →';
-      alert('Something went wrong. Please try again or email us directly.');
-    }
-  }).catch(function() {
-    btn.disabled = false;
-    btn.textContent = 'Count Me In →';
-    alert('Could not connect. Please check your internet and try again.');
-  });
-}
+</script>
