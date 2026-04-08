@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>You're In — First Coast Roller Hockey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:   #0a1628;
+    --navy2:  #112240;
+    --blue:   #1a4fa0;
+    --ice:    #d6eaf8;
+    --orange: #e85d04;
+    --orange2:#f48c06;
+    --white:  #f5f7fa;
+    --muted:  #8fa4c2;
+    --border: rgba(214,234,248,0.12);
+  }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  /* Background grid */
+  .bg-grid {
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(214,234,248,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(214,234,248,0.035) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  /* Glow */
+  .bg-glow {
+    position: fixed;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,79,160,0.28) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Rink circle decoration */
+  .rink-ring {
+    position: fixed;
+    width: 520px; height: 520px;
+    border-radius: 50%;
+    border: 1px solid rgba(214,234,248,0.05);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .rink-ring-2 {
+    width: 320px; height: 320px;
+    border-color: rgba(214,234,248,0.04);
+  }
+
+  /* Main card */
+  .card {
+    position: relative; z-index: 2;
+    background: var(--navy2);
+    border: 1px solid rgba(232,93,4,0.25);
+    border-radius: 16px;
+    padding: 3.5rem 3rem;
+    max-width: 560px;
+    width: 100%;
+    animation: riseIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @media (max-width: 560px) { .card { padding: 2.5rem 1.6rem; } }
+
+  @keyframes riseIn {
+    from { opacity: 0; transform: translateY(32px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Checkmark icon */
+  .check-wrap {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: rgba(232,93,4,0.1);
+    border: 2px solid rgba(232,93,4,0.35);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.8rem;
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.5); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  .check-wrap svg {
+    width: 34px; height: 34px;
+    stroke: var(--orange);
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .check-path {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    animation: drawCheck 0.4s ease 0.6s forwards;
+  }
+  @keyframes drawCheck {
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* Eyebrow */
+  .eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 0.8rem;
+    animation: fadeUp 0.5s ease 0.4s both;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 4rem);
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    margin-bottom: 1.2rem;
+    animation: fadeUp 0.5s ease 0.5s both;
+  }
+  h1 em { font-style: normal; color: var(--orange); }
+
+  .message {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 0.8rem;
+    animation: fadeUp 0.5s ease 0.6s both;
+  }
+
+  .message strong { color: var(--white); font-weight: 600; }
+
+  .divider {
+    width: 48px; height: 2px;
+    background: rgba(232,93,4,0.35);
+    border-radius: 2px;
+    margin: 1.6rem auto;
+    animation: fadeUp 0.5s ease 0.65s both;
+  }
+
+  .next-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    animation: fadeUp 0.5s ease 0.7s both;
+  }
+
+  /* Buttons */
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    animation: fadeUp 0.5s ease 0.75s both;
+  }
+
+  .btn-primary {
+    background: var(--orange);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.9rem 2rem;
+    border-radius: 6px;
+    transition: background 0.2s, transform 0.15s;
+    display: block;
+  }
+  .btn-primary:hover { background: var(--orange2); transform: translateY(-2px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--ice);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.9rem 2rem;
+    border-radius: 6px;
+    border: 1px solid rgba(214,234,248,0.2);
+    transition: border-color 0.2s, transform 0.15s;
+    display: block;
+  }
+  .btn-secondary:hover { border-color: rgba(214,234,248,0.5); transform: translateY(-2px); }
+
+  /* Logo at bottom */
+  .logo-footer {
+    position: relative; z-index: 2;
+    margin-top: 2.5rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    color: rgba(143,164,194,0.4);
+    animation: fadeUp 0.5s ease 0.9s both;
+  }
+  .logo-footer span { color: rgba(232,93,4,0.4); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="rink-ring"></div>
+<div class="rink-ring rink-ring-2"></div>
+
+<div class="card">
+
+  <div class="check-wrap">
+    <svg viewBox="0 0 34 34">
+      <polyline class="check-path" points="6,17 14,25 28,10" />
+    </svg>
+  </div>
+
+  <p class="eyebrow">You're officially in</p>
+  <h1>Welcome to the <em>Team.</em></h1>
+
+  <p class="message">
+    Your name is now part of the foundation of First Coast Roller Hockey. <strong>This is how rinks get built</strong> — one person at a time, starting with people who care enough to show up before there's anything to show up to.
+  </p>
+  <p class="message">
+    We'll be in touch as we move through each phase. You'll hear from us first when it's time to pick a location, open memberships, and register for leagues.
+  </p>
+
+  <div class="divider"></div>
+
+  <p class="next-label">What would you like to do next?</p>
+
+  <div class="btn-group">
+    <a href="index.html" class="btn-primary">← Back to Home</a>
+    <a href="phases.html" class="btn-secondary">See Our Roadmap</a>
+  </div>
+
+</div>
+
+<p class="logo-footer">First Coast <span>Roller Hockey</span> &nbsp;·&nbsp; Jacksonville, FL</p>
+
+</body>
+</html>
