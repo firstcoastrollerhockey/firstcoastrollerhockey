@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FAQ — First Coast Roller Hockey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:   #0a1628;
+    --navy2:  #112240;
+    --blue:   #1a4fa0;
+    --ice:    #d6eaf8;
+    --orange: #e85d04;
+    --orange2:#f48c06;
+    --white:  #f5f7fa;
+    --muted:  #8fa4c2;
+    --border: rgba(214,234,248,0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem;
+    background: rgba(10,22,40,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.06em;
+    color: var(--white);
+    text-decoration: none;
+    line-height: 1;
+  }
+  .nav-logo span { color: var(--orange); }
+  .nav-links { display: flex; align-items: center; gap: 1.8rem; }
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--white); }
+  .nav-links a.nav-cta {
+    background: var(--orange);
+    color: #fff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  .nav-links a.nav-cta:hover { background: var(--orange2); color: #fff; }
+  @media (max-width: 560px) {
+    .nav-links a:not(.nav-cta) { display: none; }
+  }
+
+  /* ── HERO ── */
+  .page-hero {
+    position: relative;
+    padding: 10rem 2rem 5rem;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(214,234,248,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(214,234,248,0.035) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,79,160,0.28) 0%, transparent 70%);
+    top: 0; left: 50%; transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative; z-index: 2;
+    max-width: 680px; margin: 0 auto;
+  }
+  .eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+    animation: fadeUp 0.5s ease both;
+  }
+  .eyebrow::before, .eyebrow::after {
+    content: ''; display: block; width: 36px; height: 1px;
+    background: var(--orange); opacity: 0.6;
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    margin-bottom: 1.2rem;
+    animation: fadeUp 0.5s ease 0.1s both;
+  }
+  h1 em { font-style: normal; color: var(--orange); }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+    animation: fadeUp 0.5s ease 0.2s both;
+  }
+
+  /* ── CATEGORY TABS ── */
+  .tab-bar {
+    position: sticky;
+    top: 64px;
+    z-index: 50;
+    background: rgba(10,22,40,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-inner {
+    display: flex;
+    gap: 0;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 1rem 1.2rem;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .tab-btn:hover { color: var(--white); }
+  .tab-btn.active { color: var(--orange); border-bottom-color: var(--orange); }
+
+  /* ── FAQ CONTENT ── */
+  .faq-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 2rem 6rem;
+  }
+
+  .faq-group { margin-bottom: 3.5rem; }
+  .group-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(232,93,4,0.2);
+  }
+
+  .faq-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+  .faq-item {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .faq-item:hover { border-color: rgba(214,234,248,0.2); }
+  .faq-item.open { border-color: rgba(232,93,4,0.3); }
+
+  .faq-q {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    text-align: left;
+    font-family: 'Barlow', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+    transition: color 0.2s;
+  }
+  .faq-item.open .faq-q { color: var(--white); }
+
+  .faq-icon {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s, border-color 0.2s, transform 0.25s;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1;
+  }
+  .faq-item.open .faq-icon {
+    background: rgba(232,93,4,0.12);
+    border-color: rgba(232,93,4,0.35);
+    color: var(--orange);
+    transform: rotate(45deg);
+  }
+
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.3s;
+    font-size: 0.97rem;
+    color: var(--muted);
+    line-height: 1.78;
+    padding: 0 1.5rem;
+  }
+  .faq-item.open .faq-a {
+    max-height: 400px;
+    padding: 0 1.5rem 1.4rem;
+  }
+  .faq-a a {
+    color: var(--orange);
+    text-decoration: none;
+  }
+  .faq-a a:hover { text-decoration: underline; }
+
+  /* ── BOTTOM CTA ── */
+  .bottom-cta {
+    background: var(--navy2);
+    border-top: 1px solid var(--border);
+    padding: 5rem 2rem;
+    text-align: center;
+  }
+  .bottom-cta h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.8rem;
+  }
+  .bottom-cta h2 em { font-style: normal; color: var(--orange); }
+  .bottom-cta p {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 440px;
+    margin: 0 auto 2rem;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: var(--orange);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.9rem 2.2rem;
+    border-radius: 6px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--orange2); transform: translateY(-2px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #060e1a;
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  footer strong {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.06em;
+    color: var(--white);
+  }
+  footer a { color: var(--orange); text-decoration: none; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">First Coast <span>Roller Hockey</span></a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="phases.html">Our Roadmap</a>
+    <a href="faq.html" class="active">FAQ</a>
+    <a href="index.html#interest" class="nav-cta">Count Me In</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <p class="eyebrow">Got Questions?</p>
+    <h1>We've Got <em>Answers.</em></h1>
+    <p class="hero-sub">
+      Everything we know right now, laid out honestly. If you don't see your question here, reach out — we actually read every message.
+    </p>
+  </div>
+</div>
+
+<!-- CATEGORY TABS -->
+<div class="tab-bar">
+  <div class="tab-inner">
+    <button class="tab-btn active" onclick="filterGroup('all', this)">All Questions</button>
+    <button class="tab-btn" onclick="filterGroup('about', this)">About the Project</button>
+    <button class="tab-btn" onclick="filterGroup('facility', this)">The Facility</button>
+    <button class="tab-btn" onclick="filterGroup('programs', this)">Programs & Play</button>
+    <button class="tab-btn" onclick="filterGroup('funding', this)">Funding & Partners</button>
+    <button class="tab-btn" onclick="filterGroup('involved', this)">Getting Involved</button>
+  </div>
+</div>
+
+<!-- FAQ CONTENT -->
+<div class="faq-section">
+
+  <!-- ABOUT -->
+  <div class="faq-group" data-group="about">
+    <p class="group-label">About the Project</p>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What is First Coast Roller Hockey?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          First Coast Roller Hockey is a planned roller hockey facility for the First Coast area. Our goal is to create a dedicated space for leagues, training, and community events — something that currently doesn't exist locally. We're starting by gauging community interest so we can show the real demand that exists here in Jacksonville.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Where will the rink be located?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          We are exploring potential locations in the Jacksonville and St. Johns County area. The exact location will depend on finding a space that fits the project's needs — size, accessibility, and long-term growth potential. Interestingly, where you live matters: the ZIP codes showing the most interest will directly influence where we look first.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          When will the rink open?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          We are still in the early phases of the project. The timeline depends on community interest, funding, and securing the right location. We'll share updates as meaningful progress is made — everyone who signs up will hear from us first.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FACILITY -->
+  <div class="faq-group" data-group="facility">
+    <p class="group-label">The Facility</p>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is this going to be an indoor rink?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          That is the goal, but it's not guaranteed yet. We would love to build a full indoor, climate-controlled facility — especially important here in Florida. However, what ultimately gets built will depend on community support, funding, and overall project costs. Our priority is simple: build a dedicated roller hockey rink for the community, even if that means starting with a high-quality outdoor or covered rink first.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What will the rink be like?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          The final version depends on the level of support and resources we're able to secure. Our ideal vision is a full indoor facility with climate control, leagues, dedicated training space, a pro shop, locker rooms, and comfortable areas for players and families. That said, we're flexible in how we get there. If needed, we're open to building a well-designed outdoor or partially covered rink as a first step — something real and usable that we can grow from.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What kind of surface will the rink have?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          We are planning for a high-quality roller hockey surface designed for both performance and player safety. The final surface choice will depend on the type of facility we build, but player experience is the top priority in that decision.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Will there be equipment rentals?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Yes. We plan to offer rental equipment, especially for new players who want to try the sport before investing in their own gear. Lowering the barrier to entry for beginners is important to us.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PROGRAMS -->
+  <div class="faq-group" data-group="programs">
+    <p class="group-label">Programs & Play</p>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Will there be leagues?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Yes — league play is a major focus. We plan to offer multiple divisions across different skill levels with structured seasons and playoffs. We're also looking at partnering with existing leagues in the Jacksonville area that currently don't have a proper home to play in.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Will you offer youth programs?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Absolutely. Youth hockey is a big part of the vision here. We plan to offer youth leagues, clinics, and beginner-friendly programs designed to help grow the game among the next generation of First Coast players. We want kids who've never touched a hockey stick to feel just as welcome as seasoned players.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Will there be open play or pickup hockey?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Yes. We plan to offer open hockey sessions, stick-and-puck times, and other flexible opportunities to get on the rink outside of leagues. Not everyone wants to commit to a full season — and that's perfectly fine.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FUNDING -->
+  <div class="faq-group" data-group="funding">
+    <p class="group-label">Funding & Partners</p>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How will the rink be funded?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          The project will be funded through a combination of community support, local sponsorships, and potential investors who believe in growing the sport here on the First Coast. The interest list we're building right now is one of our most powerful tools — it demonstrates to partners and investors that real demand exists in this market.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Can businesses sponsor or partner with the rink?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Yes — we are actively looking for local partners and sponsors who want to be part of growing hockey in the Jacksonville area. Getting involved early means being part of something from the very beginning. Reach out to us at <a href="mailto:firstcoastrollersports@gmail.com">firstcoastrollersports@gmail.com</a> and let's talk.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- GETTING INVOLVED -->
+  <div class="faq-group" data-group="involved">
+    <p class="group-label">Getting Involved</p>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How can I get involved?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          The most important thing you can do right now is sign up on our interest form and tell people about this project. Community support is what moves this from an idea to a reality. Share this page with your teammates, your hockey parents group, your neighbors — every person you bring in gets us one step closer to opening day.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Does expressing interest cost anything?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Not a dime. Signing up is completely free and doesn't commit you to any purchase or membership. What it does is send a clear signal — to investors, to partners, and to the city of Jacksonville — that this community wants this rink.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How do I stay updated?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          The best way is to fill out our interest form and check the box to receive updates. Everyone on the list will be the first to hear about location announcements, timeline updates, founding membership opportunities, and when league registration opens. You can also reach us directly at <a href="mailto:firstcoastrollersports@gmail.com">firstcoastrollersports@gmail.com</a>.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          I have a question that isn't answered here. What do I do?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Send us an email at <a href="mailto:firstcoastrollersports@gmail.com">firstcoastrollersports@gmail.com</a> — we actually read every message and will get back to you. If it's a question we're hearing a lot, we'll add it here.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /faq-section -->
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta">
+  <h2>Still Have <em>Questions?</em></h2>
+  <p>Drop us a line — or just add your name to the list and be part of building this from the start.</p>
+  <a href="index.html#interest" class="btn-primary">Count Me In →</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>First Coast Roller Hockey</strong></p>
+  <p style="margin-top:0.6rem;">Jacksonville, Florida &nbsp;·&nbsp; <a href="mailto:firstcoastrollersports@gmail.com">firstcoastrollersports@gmail.com</a></p>
+  <p style="margin-top:0.8rem; font-size:0.78rem; opacity:0.6;">© 2025 First Coast Roller Hockey. All rights reserved.</p>
+</footer>
+
+<script>
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+function filterGroup(group, tabBtn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  tabBtn.classList.add('active');
+
+  document.querySelectorAll('.faq-group').forEach(g => {
+    if (group === 'all' || g.dataset.group === group) {
+      g.style.display = 'block';
+    } else {
+      g.style.display = 'none';
+    }
+  });
+
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+}
+</script>
+
+</body>
+</html>
