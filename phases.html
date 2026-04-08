@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Our Roadmap — First Coast Roller Hockey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:   #0a1628;
+    --navy2:  #112240;
+    --blue:   #1a4fa0;
+    --ice:    #d6eaf8;
+    --orange: #e85d04;
+    --orange2:#f48c06;
+    --white:  #f5f7fa;
+    --muted:  #8fa4c2;
+    --border: rgba(214,234,248,0.12);
+    --active: #e85d04;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem;
+    background: rgba(10,22,40,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.06em;
+    color: var(--white);
+    text-decoration: none;
+    line-height: 1;
+  }
+  .nav-logo span { color: var(--orange); }
+  .nav-links { display: flex; align-items: center; gap: 1.8rem; }
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--white); }
+  .nav-links a.nav-cta {
+    background: var(--orange);
+    color: #fff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  .nav-links a.nav-cta:hover { background: var(--orange2); color: #fff; }
+
+  /* ── HERO ── */
+  .page-hero {
+    position: relative;
+    padding: 10rem 2rem 5rem;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(214,234,248,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(214,234,248,0.035) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,79,160,0.3) 0%, transparent 70%);
+    top: 0; left: 50%; transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; z-index: 2; max-width: 700px; margin: 0 auto; }
+  .eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+  }
+  .eyebrow::before, .eyebrow::after {
+    content: ''; display: block; width: 36px; height: 1px;
+    background: var(--orange); opacity: 0.6;
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    margin-bottom: 1.2rem;
+  }
+  h1 em { font-style: normal; color: var(--orange); }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* ── STATUS BAR ── */
+  .status-bar {
+    background: rgba(232,93,4,0.1);
+    border-top: 1px solid rgba(232,93,4,0.2);
+    border-bottom: 1px solid rgba(232,93,4,0.2);
+    padding: 1rem 2rem;
+    text-align: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+  }
+  .pulse {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--orange);
+    display: inline-block;
+    animation: pulse 1.8s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  /* ── TIMELINE ── */
+  .timeline-section {
+    padding: 5rem 2rem 7rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .phase-block {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0 2rem;
+    position: relative;
+    margin-bottom: 0;
+  }
+
+  /* Left column: number + line */
+  .phase-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .phase-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid var(--border);
+    color: var(--muted);
+    background: var(--navy2);
+    transition: all 0.3s;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+  }
+  .phase-block.active .phase-num {
+    border-color: var(--orange);
+    color: var(--orange);
+    background: rgba(232,93,4,0.1);
+    box-shadow: 0 0 0 4px rgba(232,93,4,0.12);
+  }
+  .phase-block.done .phase-num {
+    border-color: rgba(26,79,160,0.5);
+    color: var(--blue);
+    background: rgba(26,79,160,0.1);
+  }
+  .phase-line {
+    width: 2px;
+    flex: 1;
+    min-height: 2rem;
+    background: var(--border);
+    margin: 0.5rem 0;
+  }
+  .phase-block:last-child .phase-line { display: none; }
+
+  /* Right column: content card */
+  .phase-right {
+    padding-bottom: 3rem;
+  }
+  .phase-card {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.8rem 2rem;
+    position: relative;
+    transition: border-color 0.3s;
+    margin-top: 0.2rem;
+  }
+  .phase-block.active .phase-card {
+    border-color: rgba(232,93,4,0.35);
+    background: rgba(17,34,64,0.9);
+  }
+  .phase-block.active .phase-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, rgba(232,93,4,0.2), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .phase-card > * { position: relative; z-index: 1; }
+
+  .phase-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.7rem;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 0.9rem;
+  }
+  .tag-active {
+    background: rgba(232,93,4,0.15);
+    color: var(--orange);
+    border: 1px solid rgba(232,93,4,0.3);
+  }
+  .tag-upcoming {
+    background: rgba(214,234,248,0.05);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .tag-done {
+    background: rgba(26,79,160,0.12);
+    color: #6ba3d6;
+    border: 1px solid rgba(26,79,160,0.25);
+  }
+
+  .phase-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    letter-spacing: 0.04em;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .phase-subtitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+  .phase-body {
+    font-size: 0.97rem;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+  .phase-block.active .phase-body { color: #b8cde6; }
+
+  /* Active phase CTA */
+  .phase-cta {
+    display: inline-block;
+    margin-top: 1.4rem;
+    background: var(--orange);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.65rem 1.5rem;
+    border-radius: 4px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .phase-cta:hover { background: var(--orange2); transform: translateY(-2px); }
+
+  /* ── PROGRESS BAR ── */
+  .progress-section {
+    background: var(--navy2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 2rem;
+  }
+  .progress-inner {
+    max-width: 900px; margin: 0 auto;
+  }
+  .progress-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 1rem;
+  }
+  .progress-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 2rem;
+  }
+  .progress-steps {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .progress-step {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--border);
+    transition: background 0.4s;
+  }
+  .progress-step.filled { background: var(--orange); }
+  .progress-step.active-step {
+    background: linear-gradient(90deg, var(--orange) 40%, rgba(232,93,4,0.3));
+    animation: shimmer 2s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  .progress-meta {
+    display: flex; justify-content: space-between;
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #060e1a;
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  footer strong {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.06em;
+    color: var(--white);
+  }
+  footer a { color: var(--orange); text-decoration: none; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-inner > * { animation: fadeUp 0.65s ease both; }
+  .eyebrow        { animation-delay: 0.05s; }
+  h1              { animation-delay: 0.15s; }
+  .hero-sub       { animation-delay: 0.28s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 560px) {
+    .phase-block { grid-template-columns: 50px 1fr; gap: 0 1rem; }
+    .phase-num { width: 42px; height: 42px; font-size: 0.85rem; }
+    .phase-card { padding: 1.4rem 1.2rem; }
+    .nav-links a:not(.nav-cta) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">First Coast <span>Roller Hockey</span></a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="phases.html" class="active">Our Roadmap</a>
+    <a href="index.html#interest" class="nav-cta">Count Me In</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <p class="eyebrow">The Path to Opening Day</p>
+    <h1>How We Get <em>There</em></h1>
+    <p class="hero-sub">
+      Building a rink from the ground up takes time, planning, and a community behind it. Here's exactly where we are, where we're headed, and how every person who signs up moves us forward.
+    </p>
+  </div>
+</div>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <span class="pulse"></span>
+  Currently active: Phase 1 — Gauging Community Interest
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-section">
+  <div class="progress-inner">
+    <p class="progress-label">Overall Progress</p>
+    <p class="progress-heading">Phase 1 of 6</p>
+    <div class="progress-steps">
+      <div class="progress-step active-step"></div>
+      <div class="progress-step"></div>
+      <div class="progress-step"></div>
+      <div class="progress-step"></div>
+      <div class="progress-step"></div>
+      <div class="progress-step"></div>
+    </div>
+    <div class="progress-meta">
+      <span>Getting Started</span>
+      <span>Opening Day</span>
+    </div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="timeline-section">
+
+  <!-- PHASE 1 — ACTIVE -->
+  <div class="phase-block active">
+    <div class="phase-left">
+      <div class="phase-num">01</div>
+      <div class="phase-line"></div>
+    </div>
+    <div class="phase-right">
+      <div class="phase-card">
+        <span class="phase-tag tag-active">● Active Now</span>
+        <h2 class="phase-title">Gauging Interest</h2>
+        <p class="phase-subtitle">Everything starts with the community.</p>
+        <p class="phase-body">
+          We're connecting with players, families, and fans across the First Coast to understand the real demand for a dedicated roller hockey home here in Jacksonville. The size and shape of this community — the people who sign up, where they live, what they're looking for — directly determines how quickly we move forward and what this facility will look like when we get there. Every registration is a brick in this foundation.
+        </p>
+        <a href="index.html#interest" class="phase-cta">Add Your Name →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase-block">
+    <div class="phase-left">
+      <div class="phase-num">02</div>
+      <div class="phase-line"></div>
+    </div>
+    <div class="phase-right">
+      <div class="phase-card">
+        <span class="phase-tag tag-upcoming">Upcoming</span>
+        <h2 class="phase-title">Vision & Planning</h2>
+        <p class="phase-subtitle">With strong interest, we shape the vision.</p>
+        <p class="phase-body">
+          Once our community interest goals are met, we get to work defining exactly what this rink will be. That means deciding what programs to launch first — leagues, training sessions, open skate nights — and building a realistic, detailed plan that reflects what our community told us they actually want. This phase turns enthusiasm into a blueprint.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="phase-block">
+    <div class="phase-left">
+      <div class="phase-num">03</div>
+      <div class="phase-line"></div>
+    </div>
+    <div class="phase-right">
+      <div class="phase-card">
+        <span class="phase-tag tag-upcoming">Upcoming</span>
+        <h2 class="phase-title">Funding the Project</h2>
+        <p class="phase-subtitle">Next, we secure the resources to bring it to life.</p>
+        <p class="phase-body">
+          A facility like this takes meaningful investment to build right. We'll pursue a combination of community support, local sponsorships, and investors who believe in growing the sport here on the First Coast. The interest list we're building now is one of our most powerful tools — it shows partners that real people in this community are ready and waiting.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="phase-block">
+    <div class="phase-left">
+      <div class="phase-num">04</div>
+      <div class="phase-line"></div>
+    </div>
+    <div class="phase-right">
+      <div class="phase-card">
+        <span class="phase-tag tag-upcoming">Upcoming</span>
+        <h2 class="phase-title">Location & Design</h2>
+        <p class="phase-subtitle">Once funding is in place, we find the right home and design the space.</p>
+        <p class="phase-body">
+          Finding the right location matters — not just for size, but for accessibility across the communities we want to serve. We're looking for a home that can support a full regulation rink and has room to grow. At the same time, we'll be designing the space from the playing surface to the locker rooms, the family seating areas, and the common spaces where the community will gather long after the game ends.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 5 -->
+  <div class="phase-block">
+    <div class="phase-left">
+      <div class="phase-num">05</div>
+      <div class="phase-line"></div>
+    </div>
+    <div class="phase-right">
+      <div class="phase-card">
+        <span class="phase-tag tag-upcoming">Upcoming</span>
+        <h2 class="phase-title">Permits & Construction</h2>
+        <p class="phase-subtitle">With plans finalized, we move into approvals and building.</p>
+        <p class="phase-body">
+          This is where the rink starts to take physical shape. We'll handle all required permitting with local and state agencies, then break ground and begin construction — installing the playing surface, building out the interior, and setting up the systems that keep players comfortable and the facility running year-round, including lighting, ventilation, and climate control designed for Florida's heat.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 6 -->
+  <div class="phase-block">
+    <div class="phase-left">
+      <div class="phase-num">06</div>
+      <div class="phase-line"></div>
+    </div>
+    <div class="phase-right">
+      <div class="phase-card">
+        <span class="phase-tag tag-upcoming">Upcoming</span>
+        <h2 class="phase-title">Setup & Opening</h2>
+        <p class="phase-subtitle">As construction wraps up, we prepare for launch.</p>
+        <p class="phase-body">
+          The final stretch — equipment installation, staff training, and everything that needs to happen before we can open the doors to our community. The people who signed up in Phase 1 will be the first to know when tickets, memberships, and league registrations go live. Opening day isn't just a milestone for us. It's yours too.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /timeline-section -->
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>First Coast Roller Hockey</strong></p>
+  <p style="margin-top:0.6rem;">Jacksonville, Florida &nbsp;·&nbsp; <a href="mailto:info@firstcoastrollerhockey.com">info@firstcoastrollerhockey.com</a></p>
+  <p style="margin-top:0.8rem; font-size:0.78rem; opacity:0.6;">© 2025 First Coast Roller Hockey. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
