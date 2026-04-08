@@ -637,8 +637,18 @@
     <p class="section-intro">
       Every person on this list is a founding voice in what First Coast Roller Hockey becomes. Tell us who you are and what you're looking for — we're listening, and your answers will shape every decision we make.
     </p>
+    <!-- COUNTER -->
+    <div style="display:flex;align-items:center;gap:1.2rem;background:rgba(26,79,160,0.12);border:1px solid rgba(214,234,248,0.12);border-radius:10px;padding:1.2rem 1.6rem;margin-bottom:2rem;max-width:680px;">
+      <div style="text-align:center;min-width:80px;flex-shrink:0;">
+        <span id="counter-num" style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--orange);letter-spacing:0.04em;line-height:1;display:block;">—</span>
+        <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);display:block;margin-top:0.1rem;">People In</span>
+      </div>
+      <div style="width:1px;height:48px;background:rgba(214,234,248,0.12);flex-shrink:0;"></div>
+      <p style="font-size:0.97rem;color:var(--muted);line-height:1.6;margin:0;">First Coast hockey fans have already added their name. <strong style="color:var(--white);">Be part of the founding community.</strong></p>
+    </div>
+
     <div class="form-wrap">
-      <form id="interest-form" action="https://formspree.io/f/mqegjezd" method="POST">
+      <form id="interest-form">
 
         <div class="form-row">
           <div class="field">
@@ -715,6 +725,10 @@
 
         <button type="submit" id="submit-btn">Count Me In →</button>
 
+        <div id="success-msg" style="display:none;background:rgba(26,160,100,0.12);border:1px solid rgba(26,160,100,0.35);border-radius:8px;padding:1.4rem 1.6rem;text-align:center;color:#5dcaa5;font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:0.06em;margin-top:1.2rem;">
+          ✓ You're in! Welcome to the First Coast Roller Hockey community.
+        </div>
+
         <p class="form-note">
           Your info stays with us — it will never be sold or shared with third parties. This is a community project, not a marketing list.
         </p>
@@ -731,10 +745,100 @@
 </footer>
 
 <script>
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbym7dzJpNuQ0OpBwd8MxjSEXeodQ_fThN4PNdwXnA71tzeU797JIQPajbI6wuk6FQ6UjA/exec';
+
 function toggleFaq(btn) {
   const item = btn.closest('.faq-item');
   const isOpen = item.classList.contains('open');
   document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
   if (!isOpen) item.classList.add('open');
 }
+
+function animateCounter(target) {
+  const el = document.getElementById('counter-num');
+  const duration = 1200;
+  const start = performance.now();
+  const from = 0;
+  function update(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(from + (target - from) * ease);
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+function loadCounter() {
+  fetch(APPS_SCRIPT_URL)
+    .then(r => r.json())
+    .then(data => {
+      const real = parseInt(data.count) || 0;
+      const padded = real + 47;
+      animateCounter(padded);
+    })
+    .catch(() => {
+      document.getElementById('counter-num').textContent = '47';
+    });
+}
+
+document.getElementById('interest-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const form = e.target;
+
+  const first = form.first.value.trim();
+  const last  = form.last.value.trim();
+  const email = form.email.value.trim();
+  const zip   = form.zip.value.trim();
+  const role  = form.role.value;
+
+  if (!first || !last || !email || !zip || !role) {
+    alert('Please fill in all required fields (marked with *).');
+    return;
+  }
+  if (!/^\S+@\S+\.\S+$/.test(email)) {
+    alert('Please enter a valid email address.');
+    return;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  const interests = [...form.querySelectorAll('input[name="interest"]:checked')]
+    .map(cb => cb.value).join(', ');
+
+  const payload = {
+    first:      first,
+    last:       last,
+    email:      email,
+    phone:      form.phone.value.trim(),
+    zip:        zip,
+    role:       role,
+    experience: form.experience.value,
+    interests:  interests,
+    comments:   form.comments.value.trim(),
+    subscribe:  form.subscribe.checked ? 'yes' : 'no'
+  };
+
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    document.getElementById('success-msg').style.display = 'block';
+    document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    form.reset();
+    btn.textContent = 'Submitted!';
+    loadCounter();
+  })
+  .catch(() => {
+    btn.disabled = false;
+    btn.textContent = 'Count Me In →';
+    alert('Something went wrong. Please try again.');
+  });
+});
+
+loadCounter();
 </script>
