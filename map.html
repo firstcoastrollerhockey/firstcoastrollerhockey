@@ -350,12 +350,12 @@
 <!-- FOOTER -->
 <footer>
   <p><strong>First Coast Roller Hockey</strong></p>
-  <p style="margin-top:0.5rem;">Jacksonville, Florida &nbsp;·&nbsp; <a href="mailto:firstcoastrollersports@gmail.com">firstcoastrollersports@gmail.com</a></p>
+  <p style="margin-top:0.5rem;">Jacksonville, Florida &nbsp;·&nbsp; <a href="/cdn-cgi/l/email-protection#90f6f9e2e3e4f3fff1e3e4e2fffcfcf5e2e3e0ffe2e4e3d0f7fdf1f9fcbef3fffd"><span class="__cf_email__" data-cfemail="e6808f949592858987959294898a8a8394959689949295a6818b878f8ac885898b">[email&#160;protected]</span></a></p>
   <p style="margin-top:0.6rem;font-size:0.75rem;opacity:0.5;">© 2025 First Coast Roller Hockey. All rights reserved.</p>
 </footer>
 
-<script>
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbym7dzJpNuQ0OpBwd8MxjSEXeodQ_fThN4PNdwXnA71tzeU797JIQPajbI6wuk6FQ6UjA/exec';
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwTY6TWEZ-PNeYxxLsFl0o_SSwrUddW57iv8DWuKIq0LMz4Jrllw5nyugTnCO7sTmScCRtm0vQWhKl/pub?gid=1349285794&single=true&output=csv';
 
 // ZIP code coordinates for Northeast Florida / St. Johns County area
 const ZIP_COORDS = {
@@ -497,11 +497,21 @@ function initMap() {
   loadData();
 }
 
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  // First line is header (ZIP), rest are zip codes
+  return lines.slice(1)
+    .map(line => line.trim().replace(/"/g, ''))
+    .filter(zip => zip.length > 0)
+    .map(zip => ({ zip: zip.substring(0, 5) }));
+}
+
 function loadData() {
-  fetch(APPS_SCRIPT_URL)
-    .then(r => r.json())
-    .then(data => {
-      const rows = data.rows || [];
+  fetch(CSV_URL + '&cachebust=' + Date.now())
+    .then(r => r.text())
+    .then(text => {
+      const rows = parseCSV(text);
       const zipCounts = {};
 
       rows.forEach(row => {
@@ -511,11 +521,11 @@ function loadData() {
         }
       });
 
-      // If no real data yet, seed with demo data so map isn't empty
+      // Seed demo data if no real data yet so map isn't empty
       const hasData = Object.keys(zipCounts).length > 0;
       if (!hasData) {
         const demoZips = ['32256','32225','32259','32092','32084','32086','32081','32218','32246','32257','32073','32065','32034','32080','32095','32224','32223','32250','32211','32205'];
-        demoZips.forEach((z, i) => { zipCounts[z] = Math.max(1, Math.floor(Math.random() * 4) + 1); });
+        demoZips.forEach(z => { zipCounts[z] = Math.max(1, Math.floor(Math.random() * 4) + 1); });
       }
 
       // Clear old circles
@@ -570,14 +580,14 @@ function loadData() {
       setTimeout(loadData, 60000);
     })
     .catch(err => {
-      console.error(err);
+      console.error('CSV fetch error:', err);
       document.getElementById('map-loading').style.display = 'none';
     });
 }
 </script>
 
 <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDA1Ezebz34N6c2-AJlStNZwojGLrx8lJ8&callback=initMap">
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgkhkaHm-5mlVHXza8L15gn-SObONwJXk&callback=initMap">
 </script>
 
 </body>

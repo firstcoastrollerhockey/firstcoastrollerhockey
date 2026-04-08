@@ -459,6 +459,7 @@
   <div style="display:flex;align-items:center;gap:1.8rem;">
     <a href="phases.html" style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;color:var(--muted);transition:color 0.2s;" onmouseover="this.style.color='var(--white)'" onmouseout="this.style.color='var(--muted)'">Our Roadmap</a>
     <a href="faq.html" style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;color:var(--muted);transition:color 0.2s;" onmouseover="this.style.color='var(--white)'" onmouseout="this.style.color='var(--muted)'">FAQ</a>
+    <a href="map.html" style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;color:var(--muted);transition:color 0.2s;" onmouseover="this.style.color='var(--white)'" onmouseout="this.style.color='var(--muted)'">Community Map</a>
     <a href="#interest" class="nav-cta">Count Me In</a>
   </div>
 </nav>
@@ -745,6 +746,7 @@
 </footer>
 
 <script>
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwTY6TWEZ-PNeYxxLsFl0o_SSwrUddW57iv8DWuKIq0LMz4Jrllw5nyugTnCO7sTmScCRtm0vQWhKl/pub?gid=1349285794&single=true&output=csv';
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbym7dzJpNuQ0OpBwd8MxjSEXeodQ_fThN4PNdwXnA71tzeU797JIQPajbI6wuk6FQ6UjA/exec';
 
 function toggleFaq(btn) {
@@ -769,10 +771,11 @@ function animateCounter(target) {
 }
 
 function loadCounter() {
-  fetch(APPS_SCRIPT_URL)
-    .then(r => r.json())
-    .then(data => {
-      const real = parseInt(data.count) || 0;
+  fetch(CSV_URL + '&cachebust=' + Date.now())
+    .then(r => r.text())
+    .then(text => {
+      const lines = text.trim().split('\n').filter(l => l.trim() && l.trim() !== 'ZIP');
+      const real = lines.length;
       const padded = real + 47;
       animateCounter(padded);
     })
