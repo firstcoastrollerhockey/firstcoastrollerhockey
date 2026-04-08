@@ -775,11 +775,10 @@ function loadCounter() {
     .then(r => r.text())
     .then(text => {
       const lines = text.trim().split('\n').filter(l => l.trim() && l.trim().toUpperCase() !== 'ZIP');
-      const real = lines.length;
-      animateCounter(real + 47);
+      animateCounter(lines.length);
     })
     .catch(() => {
-      document.getElementById('counter-num').textContent = '47';
+      document.getElementById('counter-num').textContent = '0';
     });
 }
 
