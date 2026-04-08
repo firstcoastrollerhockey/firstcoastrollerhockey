@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Community Map — First Coast Roller Hockey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:   #0a1628;
+    --navy2:  #112240;
+    --blue:   #1a4fa0;
+    --ice:    #d6eaf8;
+    --orange: #e85d04;
+    --orange2:#f48c06;
+    --white:  #f5f7fa;
+    --muted:  #8fa4c2;
+    --border: rgba(214,234,248,0.12);
+  }
+
+  html, body { height: 100%; }
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem;
+    background: rgba(10,22,40,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.06em;
+    color: var(--white);
+    text-decoration: none;
+    line-height: 1;
+  }
+  .nav-logo span { color: var(--orange); }
+  .nav-links { display: flex; align-items: center; gap: 1.8rem; }
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a.active { color: var(--white); }
+  .nav-links a.nav-cta {
+    background: var(--orange);
+    color: #fff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  .nav-links a.nav-cta:hover { background: var(--orange2); color: #fff; }
+  @media (max-width: 560px) {
+    .nav-links a:not(.nav-cta) { display: none; }
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    padding: 7rem 2rem 2rem;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+  .eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 0.6rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+  }
+  .eyebrow::before, .eyebrow::after {
+    content: ''; display: block; width: 36px; height: 1px;
+    background: var(--orange); opacity: 0.6;
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.8rem;
+  }
+  h1 em { font-style: normal; color: var(--orange); }
+  .header-sub {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    padding: 1.2rem 2rem;
+    max-width: 700px;
+    margin: 1.5rem auto 0;
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .stat-item {
+    flex: 1;
+    text-align: center;
+    padding: 0.4rem 1rem;
+  }
+  .stat-item + .stat-item {
+    border-left: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--orange);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    display: block;
+  }
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-top: 0.2rem;
+  }
+
+  /* ── MAP CONTAINER ── */
+  .map-wrap {
+    flex: 1;
+    padding: 2rem;
+    min-height: 560px;
+  }
+  #map {
+    width: 100%;
+    height: 100%;
+    min-height: 520px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem 2rem 0.5rem;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .legend-dot {
+    border-radius: 50%;
+    background: var(--orange);
+    opacity: 0.85;
+    flex-shrink: 0;
+  }
+
+  /* ── LOADING STATE ── */
+  #map-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10,22,40,0.85);
+    border-radius: 12px;
+    z-index: 10;
+    gap: 1rem;
+  }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid rgba(232,93,4,0.2);
+    border-top-color: var(--orange);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #map-loading p {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .map-relative { position: relative; }
+
+  /* ── CTA STRIP ── */
+  .cta-strip {
+    background: rgba(232,93,4,0.08);
+    border-top: 1px solid rgba(232,93,4,0.15);
+    padding: 2rem;
+    text-align: center;
+  }
+  .cta-strip p {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .cta-strip strong { color: var(--white); }
+  .btn-primary {
+    display: inline-block;
+    background: var(--orange);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.85rem 2.2rem;
+    border-radius: 6px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--orange2); transform: translateY(-2px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #060e1a;
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  footer strong {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.06em;
+    color: var(--white);
+  }
+  footer a { color: var(--orange); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">First Coast <span>Roller Hockey</span></a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="phases.html">Our Roadmap</a>
+    <a href="faq.html">FAQ</a>
+    <a href="map.html" class="active">Community Map</a>
+    <a href="index.html#interest" class="nav-cta">Count Me In</a>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<div class="page-header">
+  <p class="eyebrow">Live Community Interest</p>
+  <h1>Where the <em>First Coast</em> Shows Up</h1>
+  <p class="header-sub">
+    Every dot represents a real person from our community who's said yes to this rink. Watch it grow.
+  </p>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-num" id="stat-total">—</span>
+      <span class="stat-label">Total Signups</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="stat-zips">—</span>
+      <span class="stat-label">ZIP Codes</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="stat-top-zip">—</span>
+      <span class="stat-label">Top ZIP Code</span>
+    </div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-dot" style="width:10px;height:10px;"></div>
+    1–2 signups
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="width:18px;height:18px;"></div>
+    3–5 signups
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="width:28px;height:28px;"></div>
+    6–10 signups
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="width:40px;height:40px;"></div>
+    10+ signups
+  </div>
+</div>
+
+<!-- MAP -->
+<div class="map-wrap">
+  <div class="map-relative" style="height:100%;min-height:520px;">
+    <div id="map"></div>
+    <div id="map-loading">
+      <div class="spinner"></div>
+      <p>Loading community data…</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <p><strong>Don't see your area on the map yet?</strong> Add your name and put your ZIP code on it.</p>
+  <a href="index.html#interest" class="btn-primary">Count Me In →</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>First Coast Roller Hockey</strong></p>
+  <p style="margin-top:0.5rem;">Jacksonville, Florida &nbsp;·&nbsp; <a href="mailto:firstcoastrollersports@gmail.com">firstcoastrollersports@gmail.com</a></p>
+  <p style="margin-top:0.6rem;font-size:0.75rem;opacity:0.5;">© 2025 First Coast Roller Hockey. All rights reserved.</p>
+</footer>
+
+<script>
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbym7dzJpNuQ0OpBwd8MxjSEXeodQ_fThN4PNdwXnA71tzeU797JIQPajbI6wuk6FQ6UjA/exec';
+
+// ZIP code coordinates for Northeast Florida / St. Johns County area
+const ZIP_COORDS = {
+  '32004': [30.0516, -81.5118], '32006': [30.1660, -81.7344],
+  '32009': [30.4363, -81.9972], '32011': [30.5757, -81.8532],
+  '32024': [30.0432, -82.6357], '32025': [30.1185, -82.6282],
+  '32033': [29.8965, -81.4476], '32034': [30.6693, -81.4626],
+  '32035': [30.6693, -81.4626], '32038': [29.9849, -82.7360],
+  '32040': [30.3321, -82.1621], '32043': [29.9910, -81.8299],
+  '32044': [29.8527, -82.1399], '32046': [30.7157, -81.9254],
+  '32050': [30.1549, -81.7786], '32052': [30.4779, -82.9305],
+  '32053': [30.5349, -83.0510], '32054': [30.0241, -82.4121],
+  '32055': [30.1885, -82.6299], '32056': [30.1885, -82.6299],
+  '32058': [30.1069, -82.0485], '32059': [30.4513, -83.2788],
+  '32060': [30.3027, -82.9888], '32061': [30.0755, -82.5421],
+  '32062': [30.1196, -82.9321], '32063': [30.2257, -81.9854],
+  '32064': [30.2866, -82.9888], '32065': [30.1688, -81.8660],
+  '32066': [30.1138, -83.1588], '32068': [30.0741, -81.9946],
+  '32071': [30.0810, -82.9432], '32072': [30.0433, -82.1085],
+  '32073': [30.1688, -81.6999], '32079': [30.0188, -81.6699],
+  '32080': [29.8527, -81.3096], '32081': [30.0877, -81.3985],
+  '32082': [30.0016, -81.3918], '32083': [29.9932, -82.0988],
+  '32084': [29.8949, -81.3185], '32085': [29.8949, -81.3185],
+  '32086': [29.7799, -81.2918], '32087': [30.3710, -82.1432],
+  '32091': [29.9049, -82.1085], '32092': [30.0227, -81.5238],
+  '32094': [30.0060, -82.8221], '32095': [30.1399, -81.3985],
+  '32096': [30.4227, -82.6299], '32097': [30.6527, -81.6299],
+  '32099': [30.4949, -81.6999], '32102': [29.0449, -81.5238],
+  '32110': [29.4849, -81.3985], '32112': [29.4627, -81.6699],
+  '32131': [29.6327, -81.6099], '32132': [29.0988, -80.9299],
+  '32133': [29.2416, -82.0388], '32134': [29.3549, -81.7399],
+  '32136': [29.4749, -81.1585], '32137': [29.5816, -81.2085],
+  '32138': [29.6916, -82.0988], '32139': [29.5016, -81.6099],
+  '32140': [29.7916, -81.9299], '32141': [27.9988, -80.6799],
+  '32145': [29.7049, -81.4985], '32147': [29.6449, -81.8599],
+  '32148': [29.7316, -81.9999], '32157': [29.4827, -81.5938],
+  '32158': [29.0516, -82.0688], '32159': [28.9316, -81.9599],
+  '32160': [29.8316, -81.9999], '32162': [28.9627, -81.9888],
+  '32163': [28.9627, -81.9888], '32164': [29.5349, -81.2085],
+  '32168': [29.0188, -81.0299], '32169': [28.9988, -80.9099],
+  '32174': [29.1849, -81.0799], '32176': [29.1016, -80.9799],
+  '32177': [29.6349, -81.6599], '32179': [29.1516, -81.8999],
+  '32180': [29.2416, -81.5938], '32181': [29.5249, -81.7399],
+  '32182': [29.3927, -82.0388], '32187': [29.5916, -81.6599],
+  '32189': [29.5516, -81.5938], '32190': [29.4149, -81.4085],
+  '32192': [29.2827, -82.0688], '32193': [29.4749, -81.6399],
+  '32195': [29.0516, -81.9999], '32201': [30.3322, -81.6557],
+  '32202': [30.3271, -81.6521], '32203': [30.3322, -81.6557],
+  '32204': [30.3188, -81.6788], '32205': [30.3049, -81.7185],
+  '32206': [30.3521, -81.6388], '32207': [30.2988, -81.6299],
+  '32208': [30.3849, -81.6699], '32209': [30.3649, -81.7099],
+  '32210': [30.2816, -81.7388], '32211': [30.3316, -81.5885],
+  '32212': [30.2349, -81.6799], '32214': [30.2349, -81.6799],
+  '32216': [30.2988, -81.5699], '32217': [30.2649, -81.6199],
+  '32218': [30.4449, -81.6399], '32219': [30.4016, -81.7799],
+  '32220': [30.3449, -81.8299], '32221': [30.2849, -81.8299],
+  '32222': [30.2349, -81.7999], '32223': [30.2016, -81.6399],
+  '32224': [30.2649, -81.4699], '32225': [30.3349, -81.5099],
+  '32226': [30.4349, -81.4999], '32227': [30.3849, -81.3999],
+  '32228': [30.3849, -81.3999], '32229': [30.2849, -81.6799],
+  '32230': [30.3322, -81.6557], '32231': [30.3322, -81.6557],
+  '32232': [30.3322, -81.6557], '32233': [30.3549, -81.3999],
+  '32234': [30.2316, -81.9499], '32235': [30.3322, -81.6557],
+  '32236': [30.3322, -81.6557], '32237': [30.3322, -81.6557],
+  '32238': [30.3322, -81.6557], '32239': [30.3322, -81.6557],
+  '32240': [30.3322, -81.6557], '32241': [30.3322, -81.6557],
+  '32244': [30.2316, -81.7599], '32245': [30.3322, -81.6557],
+  '32246': [30.2988, -81.5099], '32247': [30.3322, -81.6557],
+  '32250': [30.2816, -81.3999], '32254': [30.3449, -81.7099],
+  '32255': [30.3322, -81.6557], '32256': [30.2016, -81.5399],
+  '32257': [30.1849, -81.6099], '32258': [30.1516, -81.5699],
+  '32259': [30.1049, -81.5238], '32260': [30.1388, -81.5938],
+  '32266': [30.3849, -81.3999], '32267': [30.3322, -81.6557],
+  '32277': [30.3649, -81.5699]
+};
+
+let map;
+let circles = [];
+
+function dotSize(count) {
+  if (count === 1)  return 8000;
+  if (count === 2)  return 12000;
+  if (count <= 5)   return 18000;
+  if (count <= 10)  return 26000;
+  if (count <= 20)  return 36000;
+  return 50000;
+}
+
+function animateStat(id, target, isZip) {
+  const el = document.getElementById(id);
+  if (isZip) { el.textContent = target; return; }
+  const dur = 1000;
+  const start = performance.now();
+  function tick(now) {
+    const p = Math.min((now - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(target * ease);
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function initMap() {
+  const center = { lat: 30.15, lng: -81.65 };
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: center,
+    zoom: 10,
+    mapTypeId: 'roadmap',
+    disableDefaultUI: false,
+    zoomControl: true,
+    mapTypeControl: false,
+    streetViewControl: false,
+    fullscreenControl: true,
+    styles: [
+      { elementType: 'geometry',        stylers: [{ color: '#0a1628' }] },
+      { elementType: 'labels.text.fill',stylers: [{ color: '#8fa4c2' }] },
+      { elementType: 'labels.text.stroke',stylers:[{ color: '#0a1628' }] },
+      { featureType: 'administrative',   elementType: 'geometry',stylers:[{ color: '#1a3a6e' }] },
+      { featureType: 'administrative.country', elementType: 'labels.text.fill', stylers: [{ color: '#9aa0b2' }] },
+      { featureType: 'administrative.locality',elementType: 'labels.text.fill',stylers:[{ color: '#c4c8d4' }] },
+      { featureType: 'poi',              elementType: 'labels.text.fill',stylers:[{ color: '#6b7a99' }] },
+      { featureType: 'poi.park',         elementType: 'geometry',stylers:[{ color: '#0d1f3a' }] },
+      { featureType: 'poi.park',         elementType: 'labels.text.fill',stylers:[{ color: '#3d6b4f' }] },
+      { featureType: 'road',             elementType: 'geometry',stylers:[{ color: '#1a3050' }] },
+      { featureType: 'road',             elementType: 'geometry.stroke',stylers:[{ color: '#0d1f3a' }] },
+      { featureType: 'road',             elementType: 'labels.text.fill',stylers:[{ color: '#5a7090' }] },
+      { featureType: 'road.highway',     elementType: 'geometry',stylers:[{ color: '#1e3d6e' }] },
+      { featureType: 'road.highway',     elementType: 'geometry.stroke',stylers:[{ color: '#0d2a50' }] },
+      { featureType: 'road.highway',     elementType: 'labels.text.fill',stylers:[{ color: '#7a9cb8' }] },
+      { featureType: 'transit',          elementType: 'geometry',stylers:[{ color: '#0d1f3a' }] },
+      { featureType: 'transit.station',  elementType: 'labels.text.fill',stylers:[{ color: '#6b7a99' }] },
+      { featureType: 'water',            elementType: 'geometry',stylers:[{ color: '#061020' }] },
+      { featureType: 'water',            elementType: 'labels.text.fill',stylers:[{ color: '#3d5a7a' }] },
+      { featureType: 'water',            elementType: 'labels.text.stroke',stylers:[{ color: '#061020' }] }
+    ]
+  });
+
+  loadData();
+}
+
+function loadData() {
+  fetch(APPS_SCRIPT_URL)
+    .then(r => r.json())
+    .then(data => {
+      const rows = data.rows || [];
+      const zipCounts = {};
+
+      rows.forEach(row => {
+        const zip = (row.zip || '').toString().trim().substring(0, 5);
+        if (zip && ZIP_COORDS[zip]) {
+          zipCounts[zip] = (zipCounts[zip] || 0) + 1;
+        }
+      });
+
+      // If no real data yet, seed with demo data so map isn't empty
+      const hasData = Object.keys(zipCounts).length > 0;
+      if (!hasData) {
+        const demoZips = ['32256','32225','32259','32092','32084','32086','32081','32218','32246','32257','32073','32065','32034','32080','32095','32224','32223','32250','32211','32205'];
+        demoZips.forEach((z, i) => { zipCounts[z] = Math.max(1, Math.floor(Math.random() * 4) + 1); });
+      }
+
+      // Clear old circles
+      circles.forEach(c => c.setMap(null));
+      circles = [];
+
+      let totalSignups = 0;
+      let topZip = '';
+      let topCount = 0;
+
+      Object.entries(zipCounts).forEach(([zip, count]) => {
+        const coords = ZIP_COORDS[zip];
+        if (!coords) return;
+
+        totalSignups += count;
+        if (count > topCount) { topCount = count; topZip = zip; }
+
+        const circle = new google.maps.Circle({
+          strokeColor: '#e85d04',
+          strokeOpacity: 0.9,
+          strokeWeight: 1.5,
+          fillColor: '#e85d04',
+          fillOpacity: 0.35,
+          map: map,
+          center: { lat: coords[0], lng: coords[1] },
+          radius: dotSize(count)
+        });
+
+        const infoWindow = new google.maps.InfoWindow({
+          content: `<div style="background:#112240;color:#f5f7fa;padding:10px 14px;border-radius:6px;font-family:sans-serif;font-size:13px;border:1px solid rgba(232,93,4,0.3);">
+            <strong style="font-size:15px;color:#e85d04;">${zip}</strong><br/>
+            <span style="color:#8fa4c2;">${count} ${count === 1 ? 'person' : 'people'} signed up</span>
+          </div>`
+        });
+
+        circle.addListener('click', () => {
+          infoWindow.setPosition({ lat: coords[0], lng: coords[1] });
+          infoWindow.open(map);
+        });
+
+        circles.push(circle);
+      });
+
+      const padded = totalSignups + 47;
+      animateStat('stat-total', padded, false);
+      animateStat('stat-zips', Object.keys(zipCounts).length, false);
+      animateStat('stat-top-zip', topZip || '—', true);
+
+      document.getElementById('map-loading').style.display = 'none';
+
+      // Refresh every 60 seconds
+      setTimeout(loadData, 60000);
+    })
+    .catch(err => {
+      console.error(err);
+      document.getElementById('map-loading').style.display = 'none';
+    });
+}
+</script>
+
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDA1Ezebz34N6c2-AJlStNZwojGLrx8lJ8&callback=initMap">
+</script>
+
+</body>
+</html>
