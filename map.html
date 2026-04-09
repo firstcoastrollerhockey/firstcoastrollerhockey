@@ -591,4 +591,15 @@ function loadData() {
       setTimeout(loadData, 60000);
     })
     .catch(err => {
-      console.error('CS
+      console.error('CSV fetch error:', err);
+      document.getElementById('map-loading').style.display = 'none';
+    });
+}
+</script>
+
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgkhkaHm-5mlVHXza8L15gn-SObONwJXk&callback=initMap">
+</script>
+
+</body>
+</html>
