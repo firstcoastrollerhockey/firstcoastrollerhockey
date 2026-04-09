@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/png" href="FCRH_logo.png" />
+<title>Project Updates — First Coast Roller Hockey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:   #0a1628;
+    --navy2:  #112240;
+    --blue:   #1a4fa0;
+    --ice:    #d6eaf8;
+    --orange: #e85d04;
+    --orange2:#f48c06;
+    --white:  #f5f7fa;
+    --muted:  #8fa4c2;
+    --border: rgba(214,234,248,0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem;
+    background: rgba(10,22,40,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.06em;
+    color: var(--white);
+    text-decoration: none;
+    line-height: 1;
+  }
+  .nav-links { display: flex; align-items: center; gap: 1.8rem; }
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a.active { color: var(--white); }
+  .nav-links a.nav-cta {
+    background: var(--orange);
+    color: #fff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  .nav-links a.nav-cta:hover { background: var(--orange2); color: #fff; }
+  @media (max-width: 600px) {
+    .nav-links a:not(.nav-cta) { display: none; }
+  }
+
+  /* ── HERO ── */
+  .page-hero {
+    position: relative;
+    padding: 10rem 2rem 5rem;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(214,234,248,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(214,234,248,0.035) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,79,160,0.28) 0%, transparent 70%);
+    top: 0; left: 50%; transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; z-index: 2; max-width: 680px; margin: 0 auto; }
+  .eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+    animation: fadeUp 0.5s ease both;
+  }
+  .eyebrow::before, .eyebrow::after {
+    content: ''; display: block; width: 36px; height: 1px;
+    background: var(--orange); opacity: 0.6;
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    margin-bottom: 1rem;
+    animation: fadeUp 0.5s ease 0.1s both;
+  }
+  h1 em { font-style: normal; color: var(--orange); }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+    animation: fadeUp 0.5s ease 0.2s both;
+  }
+
+  /* ── UPDATES FEED ── */
+  .updates-section {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 4rem 2rem 7rem;
+  }
+
+  /* Single post card */
+  .post {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 0 2.5rem;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+  .post:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 49px;
+    top: 52px;
+    bottom: -3rem;
+    width: 2px;
+    background: var(--border);
+  }
+
+  /* Date column */
+  .post-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0.2rem;
+    flex-shrink: 0;
+  }
+  .date-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--orange);
+    border: 3px solid var(--navy);
+    box-shadow: 0 0 0 2px var(--orange);
+    flex-shrink: 0;
+    margin-bottom: 0.6rem;
+    position: relative;
+    z-index: 2;
+  }
+  .date-month {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange);
+    text-align: center;
+  }
+  .date-day {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--white);
+    line-height: 1;
+    text-align: center;
+  }
+  .date-year {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* Post content */
+  .post-content {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.8rem 2rem;
+    transition: border-color 0.2s;
+  }
+  .post-content:hover { border-color: rgba(232,93,4,0.25); }
+
+  .post-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--orange);
+    background: rgba(232,93,4,0.1);
+    border: 1px solid rgba(232,93,4,0.25);
+    border-radius: 3px;
+    padding: 0.2rem 0.6rem;
+    display: inline-block;
+    margin-bottom: 0.8rem;
+  }
+
+  .post-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    letter-spacing: 0.04em;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .post-body {
+    font-size: 0.97rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .post-body p { margin-bottom: 0.9rem; }
+  .post-body p:last-child { margin-bottom: 0; }
+  .post-body ul {
+    margin: 0.5rem 0 0.9rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .post-body ul li { color: var(--muted); }
+  .post-body strong { color: var(--white); font-weight: 600; }
+  .post-body a { color: var(--orange); text-decoration: none; }
+  .post-body a:hover { text-decoration: underline; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  /* ── CTA ── */
+  .bottom-cta {
+    background: var(--navy2);
+    border-top: 1px solid var(--border);
+    padding: 5rem 2rem;
+    text-align: center;
+  }
+  .bottom-cta h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.8rem;
+  }
+  .bottom-cta h2 em { font-style: normal; color: var(--orange); }
+  .bottom-cta p {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 440px;
+    margin: 0 auto 2rem;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: var(--orange);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.9rem 2.2rem;
+    border-radius: 6px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--orange2); transform: translateY(-2px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #060e1a;
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  footer strong {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.06em;
+    color: var(--white);
+  }
+  footer a { color: var(--orange); text-decoration: none; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 540px) {
+    .post { grid-template-columns: 70px 1fr; gap: 0 1.2rem; }
+    .post-content { padding: 1.2rem; }
+    .post:not(:last-child)::after { left: 34px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="FCRH_logo.png" alt="First Coast Roller Hockey" style="height:48px;width:auto;display:block;" />
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="phases.html">Our Roadmap</a>
+    <a href="faq.html">FAQ</a>
+    <a href="map.html">Community Map</a>
+    <a href="updates.html" class="active">Updates</a>
+    <a href="index.html#interest" class="nav-cta">Count Me In</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <p class="eyebrow">Stay in the Loop</p>
+    <h1>Project <em>Updates</em></h1>
+    <p class="hero-sub">
+      Follow along as First Coast Roller Hockey moves from idea to reality. Every milestone, every announcement — right here.
+    </p>
+  </div>
+</div>
+
+<!-- UPDATES FEED -->
+<div class="updates-section">
+
+  <!-- POST 1 -->
+  <div class="post">
+    <div class="post-date">
+      <div class="date-dot"></div>
+      <span class="date-month">Apr</span>
+      <span class="date-day">08</span>
+      <span class="date-year">2026</span>
+    </div>
+    <div class="post-content">
+      <span class="post-tag">Milestone</span>
+      <h2 class="post-title">Website Launch</h2>
+      <div class="post-body">
+        <p>The First Coast Roller Hockey website is officially up.</p>
+        <p>This is the first real step toward building a dedicated home for roller hockey in our area — something players, families, and the community have gone without for far too long.</p>
+        <p>Right now, the site is focused on two things:</p>
+        <ul>
+          <li>Sharing the vision</li>
+          <li>Proving the demand</li>
+        </ul>
+        <p>There's a simple sign-up form on the site. <strong>That list matters more than anything else at this stage.</strong> Every name shows that this community is real, active, and ready for a rink of its own.</p>
+        <p>If you want to see this happen, take a minute to add your name. It's a small step that helps move a big idea forward.</p>
+        <p>Check it out, share it, and help us build this the right way — from the ground up.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /updates-section -->
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta">
+  <h2>Want to Be Part of <em>This?</em></h2>
+  <p>Add your name to the interest list and you'll be the first to hear about every update as this project moves forward.</p>
+  <a href="index.html#interest" class="btn-primary">Count Me In →</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>First Coast Roller Hockey</strong></p>
+  <p style="margin-top:0.6rem;">Jacksonville, Florida &nbsp;·&nbsp; <a href="mailto:firstcoastrollerhockey@gmail.com">firstcoastrollerhockey@gmail.com</a></p>
+  <p style="margin-top:0.8rem; font-size:0.78rem; opacity:0.6;">© 2025 First Coast Roller Hockey. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
