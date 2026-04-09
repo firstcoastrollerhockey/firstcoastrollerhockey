@@ -663,14 +663,27 @@
     <p class="section-intro" style="text-align:center;">
       Every person on this list is a founding voice in what First Coast Roller Hockey becomes. Tell us who you are and what you're looking for — we're listening, and your answers will shape every decision we make.
     </p>
-    <!-- COUNTER -->
-    <div style="display:flex;align-items:center;gap:1.2rem;background:rgba(26,79,160,0.12);border:1px solid rgba(214,234,248,0.12);border-radius:10px;padding:1.2rem 1.6rem;margin-bottom:2rem;width:100%;max-width:680px;">
-      <div style="text-align:center;min-width:80px;flex-shrink:0;">
-        <span id="counter-num" style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--orange);letter-spacing:0.04em;line-height:1;display:block;">—</span>
-        <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);display:block;margin-top:0.1rem;">People In</span>
+    <!-- COUNTER + GOAL -->
+    <div style="width:100%;max-width:680px;margin-bottom:2rem;">
+      <div style="display:flex;align-items:center;gap:1.2rem;background:rgba(26,79,160,0.12);border:1px solid rgba(214,234,248,0.12);border-radius:10px 10px 0 0;padding:1.2rem 1.6rem;">
+        <div style="text-align:center;min-width:80px;flex-shrink:0;">
+          <span id="counter-num" style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--orange);letter-spacing:0.04em;line-height:1;display:block;">—</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);display:block;margin-top:0.1rem;">People In</span>
+        </div>
+        <div style="width:1px;height:48px;background:rgba(214,234,248,0.12);flex-shrink:0;"></div>
+        <p style="font-size:0.97rem;color:var(--muted);line-height:1.6;margin:0;text-align:left;">First Coast hockey fans have already added their name. <strong style="color:var(--white);">Be part of the founding community.</strong></p>
       </div>
-      <div style="width:1px;height:48px;background:rgba(214,234,248,0.12);flex-shrink:0;"></div>
-      <p style="font-size:0.97rem;color:var(--muted);line-height:1.6;margin:0;text-align:left;">First Coast hockey fans have already added their name. <strong style="color:var(--white);">Be part of the founding community.</strong></p>
+      <!-- Progress bar -->
+      <div style="background:rgba(26,79,160,0.08);border:1px solid rgba(214,234,248,0.12);border-top:none;border-radius:0 0 10px 10px;padding:1rem 1.6rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);">Phase 1 Goal</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;color:var(--orange);"><span id="counter-pct">—</span> of 500 signups</span>
+        </div>
+        <div style="background:rgba(214,234,248,0.08);border-radius:4px;height:8px;overflow:hidden;">
+          <div id="progress-bar" style="height:100%;width:0%;background:var(--orange);border-radius:4px;transition:width 1.2s cubic-bezier(0.22,1,0.36,1);"></div>
+        </div>
+        <p style="font-size:0.78rem;color:var(--muted);margin-top:0.6rem;line-height:1.5;">Reaching 500 signals to investors and partners that Jacksonville is ready. <strong style="color:var(--white);">Every signup moves us closer to Phase 2.</strong></p>
+      </div>
     </div>
 
     <div class="form-wrap" style="width:100%;max-width:680px;text-align:left;">
@@ -784,15 +797,21 @@ function toggleFaq(btn) {
   if (!isOpen) item.classList.add('open');
 }
 
+const GOAL = 500;
+
 function animateCounter(target) {
   const el = document.getElementById('counter-num');
+  const pct = document.getElementById('counter-pct');
+  const bar = document.getElementById('progress-bar');
   const duration = 1200;
   const start = performance.now();
-  const from = 0;
   function update(now) {
     const progress = Math.min((now - start) / duration, 1);
     const ease = 1 - Math.pow(1 - progress, 3);
-    el.textContent = Math.round(from + (target - from) * ease);
+    const current = Math.round(target * ease);
+    el.textContent = current;
+    if (pct) pct.textContent = current;
+    if (bar) bar.style.width = Math.min((current / GOAL) * 100, 100) + '%';
     if (progress < 1) requestAnimationFrame(update);
   }
   requestAnimationFrame(update);

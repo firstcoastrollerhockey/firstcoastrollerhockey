@@ -455,6 +455,34 @@
   </div>
 </div>
 
+<!-- SIGNUP GOAL -->
+<div style="background:var(--navy);border-bottom:1px solid var(--border);padding:3rem 2rem;">
+  <div style="max-width:900px;margin:0 auto;">
+    <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.6rem;">Phase 1 Signup Goal</p>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;">
+      <p style="font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.04em;color:var(--white);line-height:1;">500 Community Members</p>
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:0.1em;color:var(--orange);"><span id="goal-count">—</span> of 500</p>
+    </div>
+    <div style="background:rgba(214,234,248,0.08);border-radius:4px;height:10px;overflow:hidden;margin-bottom:1rem;">
+      <div id="goal-bar" style="height:100%;width:0%;background:var(--orange);border-radius:4px;transition:width 1.2s cubic-bezier(0.22,1,0.36,1);"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1.5rem;">
+      <div style="background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:1.2rem 1.4rem;">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--orange);margin-bottom:0.4rem;">What 500 unlocks</p>
+        <p style="font-size:0.92rem;color:var(--muted);line-height:1.6;">Demonstrated demand strong enough to begin serious conversations with investors, sponsors, and potential partners.</p>
+      </div>
+      <div style="background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:1.2rem 1.4rem;">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--orange);margin-bottom:0.4rem;">What happens next</p>
+        <p style="font-size:0.92rem;color:var(--muted);line-height:1.6;">We move into Phase 2 — shaping the vision and building a realistic plan around what the community told us they need.</p>
+      </div>
+      <div style="background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:1.2rem 1.4rem;">
+        <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--orange);margin-bottom:0.4rem;">How you help</p>
+        <p style="font-size:0.92rem;color:var(--muted);line-height:1.6;">Sign up and share the site. Every person you bring in is one step closer to breaking ground on a rink Jacksonville can call its own.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- TIMELINE -->
 <div class="timeline-section">
 
@@ -572,4 +600,27 @@
 <!-- FOOTER -->
 <footer>
   <p><strong>First Coast Roller Hockey</strong></p>
-  <p style="margin-top:0.6rem;">Jacksonville, Florida &nbsp;·&nbsp; <a href="/cdn-cgi/l/email-protection#157c7b737a55737c676661767a746661677a797970677d7a767e706c3b767a78"><span class="__cf_email__" data-cfemail="3b52555d547b5d5249484f58545a484f495457575e49535458505e4215585456">[email&#160;protected]</span><
+  <p style="margin-top:0.6rem;">Jacksonville, Florida &nbsp;·&nbsp; <a href="mailto:firstcoastrollerhockey@gmail.com">firstcoastrollerhockey@gmail.com</a></p>
+  <p style="margin-top:0.8rem; font-size:0.78rem; opacity:0.6;">© 2025 First Coast Roller Hockey. All rights reserved.</p>
+</footer>
+
+<script>
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRwTY6TWEZ-PNeYxxLsFl0o_SSwrUddW57iv8DWuKIq0LMz4Jrllw5nyugTnCO7sTmScCRtm0vQWhKl/pub?gid=1349285794&single=true&output=csv";
+const GOAL = 500;
+
+fetch(CSV_URL + "&cachebust=" + Date.now())
+  .then(r => r.text())
+  .then(text => {
+    const lines = text.trim().split("
+").filter(l => l.trim() && l.trim().toUpperCase() !== "ZIP");
+    const count = lines.length;
+    const pct = Math.min((count / GOAL) * 100, 100);
+    const goalCount = document.getElementById("goal-count");
+    const goalBar = document.getElementById("goal-bar");
+    if (goalCount) goalCount.textContent = count;
+    if (goalBar) setTimeout(() => { goalBar.style.width = pct + "%"; }, 200);
+  })
+  .catch(() => {});
+<\/script>
+</body>
+</html>
