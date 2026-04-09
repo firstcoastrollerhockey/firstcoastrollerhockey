@@ -656,23 +656,23 @@
   </div>
 </section>
 <section id="interest">
-  <div class="container">
+  <div class="container" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <p class="section-label">Add Your Name</p>
     <h2>This Rink Starts With You</h2>
-    <p class="section-intro">
+    <p class="section-intro" style="text-align:center;">
       Every person on this list is a founding voice in what First Coast Roller Hockey becomes. Tell us who you are and what you're looking for — we're listening, and your answers will shape every decision we make.
     </p>
     <!-- COUNTER -->
-    <div style="display:flex;align-items:center;gap:1.2rem;background:rgba(26,79,160,0.12);border:1px solid rgba(214,234,248,0.12);border-radius:10px;padding:1.2rem 1.6rem;margin-bottom:2rem;max-width:680px;">
+    <div style="display:flex;align-items:center;gap:1.2rem;background:rgba(26,79,160,0.12);border:1px solid rgba(214,234,248,0.12);border-radius:10px;padding:1.2rem 1.6rem;margin-bottom:2rem;width:100%;max-width:680px;">
       <div style="text-align:center;min-width:80px;flex-shrink:0;">
         <span id="counter-num" style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--orange);letter-spacing:0.04em;line-height:1;display:block;">—</span>
         <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);display:block;margin-top:0.1rem;">People In</span>
       </div>
       <div style="width:1px;height:48px;background:rgba(214,234,248,0.12);flex-shrink:0;"></div>
-      <p style="font-size:0.97rem;color:var(--muted);line-height:1.6;margin:0;">First Coast hockey fans have already added their name. <strong style="color:var(--white);">Be part of the founding community.</strong></p>
+      <p style="font-size:0.97rem;color:var(--muted);line-height:1.6;margin:0;text-align:left;">First Coast hockey fans have already added their name. <strong style="color:var(--white);">Be part of the founding community.</strong></p>
     </div>
 
-    <div class="form-wrap">
+    <div class="form-wrap" style="width:100%;max-width:680px;text-align:left;">
       <form id="interest-form">
 
         <div class="form-row">
@@ -759,6 +759,9 @@
         </p>
       </form>
     </div>
+    <div style="margin-top:1.5rem;text-align:center;">
+      <a href="map.html" style="display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;color:var(--ice);padding:0.85rem 2rem;border-radius:6px;border:1px solid rgba(214,234,248,0.2);transition:border-color 0.2s,transform 0.15s;" onmouseover="this.style.borderColor='rgba(214,234,248,0.5)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(214,234,248,0.2)';this.style.transform='translateY(0)'">Check Out Which Areas Are Signing Up →</a>
+    </div>
   </div>
 </section>
 
@@ -769,7 +772,7 @@
   <p style="margin-top:0.8rem; font-size:0.78rem; opacity:0.6;">© 2025 First Coast Roller Hockey. All rights reserved.</p>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwTY6TWEZ-PNeYxxLsFl0o_SSwrUddW57iv8DWuKIq0LMz4Jrllw5nyugTnCO7sTmScCRtm0vQWhKl/pub?gid=1349285794&single=true&output=csv';
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbym7dzJpNuQ0OpBwd8MxjSEXeodQ_fThN4PNdwXnA71tzeU797JIQPajbI6wuk6FQ6UjA/exec';
 
@@ -853,17 +856,4 @@ document.getElementById('interest-form').addEventListener('submit', function(e) 
   })
   .then(() => {
     document.getElementById('success-msg').style.display = 'block';
-    document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    form.reset();
-    btn.textContent = 'Submitted!';
-    loadCounter();
-  })
-  .catch(() => {
-    btn.disabled = false;
-    btn.textContent = 'Count Me In →';
-    alert('Something went wrong. Please try again.');
-  });
-});
-
-loadCounter();
-</script>
+    document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth', blo
