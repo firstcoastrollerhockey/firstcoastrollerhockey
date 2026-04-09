@@ -611,8 +611,7 @@ const GOAL = 500;
 fetch(CSV_URL + "&cachebust=" + Date.now())
   .then(r => r.text())
   .then(text => {
-    const lines = text.trim().split("
-").filter(l => l.trim() && l.trim().toUpperCase() !== "ZIP");
+    const lines = text.trim().split('\n').filter(l => l.trim() && l.trim().toUpperCase() !== "ZIP");
     const count = lines.length;
     const pct = Math.min((count / GOAL) * 100, 100);
     const goalCount = document.getElementById("goal-count");

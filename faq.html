@@ -570,3 +570,25 @@
   <h2>Still Have <em>Questions?</em></h2>
   <p>Drop us a line — or just add your name to the list and be part of building this from the start.</p>
   <a href="index.html#interest" class="btn-primary">Count Me In →
+<script>
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+function filterGroup(group, tabBtn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  tabBtn.classList.add('active');
+  document.querySelectorAll('.faq-group').forEach(g => {
+    if (group === 'all' || g.dataset.group === group) {
+      g.style.display = 'block';
+    } else {
+      g.style.display = 'none';
+    }
+  });
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+}
+</script>
+</body>
+</html>
