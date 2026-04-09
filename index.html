@@ -856,4 +856,19 @@ document.getElementById('interest-form').addEventListener('submit', function(e) 
   })
   .then(() => {
     document.getElementById('success-msg').style.display = 'block';
-    document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth', blo
+    document.getElementById('success-msg').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    form.reset();
+    btn.textContent = 'Submitted!';
+    loadCounter();
+  })
+  .catch(() => {
+    btn.disabled = false;
+    btn.textContent = 'Count Me In →';
+    alert('Something went wrong. Please try again.');
+  });
+});
+
+loadCounter();
+</script>
+</body>
+</html>
