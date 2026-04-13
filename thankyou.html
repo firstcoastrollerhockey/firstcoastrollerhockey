@@ -274,5 +274,33 @@
 
 <p class="logo-footer"><img src="FCRH_logo.png" alt="First Coast Roller Hockey" style="height:60px;width:auto;opacity:0.5;" /></p>
 
+
+<script>
+function initNav() {
+  const btn = document.getElementById('hamburger');
+  const dropdown = document.getElementById('nav-dropdown');
+  const overlay = document.getElementById('nav-overlay');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('open');
+    dropdown.classList.toggle('open');
+    overlay.classList.toggle('open');
+  });
+  overlay.addEventListener('click', () => {
+    btn.classList.remove('open');
+    dropdown.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+  dropdown.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      btn.classList.remove('open');
+      dropdown.classList.remove('open');
+      overlay.classList.remove('open');
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded', initNav);
+</script>
+
 </body>
 </html>

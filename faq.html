@@ -36,42 +36,73 @@
 
   /* ── NAV ── */
   nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 2rem;
-    background: rgba(10,22,40,0.88);
+    padding: 0.9rem 2rem;
+    background: rgba(10,22,40,0.95);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(214,234,248,0.12);
   }
-  .nav-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem;
-    letter-spacing: 0.06em;
-    color: var(--white);
-    text-decoration: none;
-    line-height: 1;
+  .nav-logo img { height: 48px; width: auto; display: block; }
+  .nav-logo { text-decoration: none; }
+  .hamburger {
+    background: none; border: none; cursor: pointer;
+    display: flex; flex-direction: column; justify-content: center;
+    gap: 5px; padding: 6px; z-index: 201;
   }
-  .nav-logo span { color: var(--orange); }
-  .nav-links { display: flex; align-items: center; gap: 1.8rem; }
-  .nav-links a {
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: #f5f7fa; border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav-dropdown {
+    position: fixed; top: 68px; left: 0; right: 0;
+    background: rgba(10,22,40,0.98);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(214,234,248,0.12);
+    padding: 0;
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.3s;
+    z-index: 199;
+  }
+  .nav-dropdown.open {
+    max-height: 500px;
+    padding: 1rem 0 1.5rem;
+  }
+  .nav-dropdown a {
+    display: block;
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
-    color: var(--muted);
-    transition: color 0.2s;
+    color: #8fa4c2;
+    padding: 0.75rem 2rem;
+    transition: color 0.2s, background 0.2s;
+    border-left: 3px solid transparent;
   }
-  .nav-links a:hover, .nav-links a.active { color: var(--white); }
-  .nav-links a.nav-cta {
-    background: var(--orange);
+  .nav-dropdown a:hover { color: #f5f7fa; background: rgba(26,79,160,0.1); border-left-color: #e85d04; }
+  .nav-dropdown a.active { color: #f5f7fa; border-left-color: #e85d04; }
+  .nav-dropdown a.nav-cta {
+    margin: 1rem 2rem 0;
+    display: block;
+    background: #e85d04;
     color: #fff;
-    padding: 0.5rem 1.2rem;
-    border-radius: 4px;
-    transition: background 0.2s;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    text-align: center;
+    border-left: none;
   }
-  .nav-links a.nav-cta:hover { background: var(--orange2); color: #fff; }
+  .nav-dropdown a.nav-cta:hover { background: #f48c06; }
+  .nav-overlay {
+    display: none; position: fixed; inset: 0; z-index: 198;
+    background: rgba(0,0,0,0.4);
+  }
+  .nav-overlay.open { display: block; }
   @media (max-width: 560px) {
     .nav-links a:not(.nav-cta) { display: none; }
   }
@@ -324,17 +355,22 @@
 
 <!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-logo"><img src="FCRH_logo.png" alt="First Coast Roller Hockey" style="height:48px;width:auto;display:block;" /></a>
-  <div class="nav-links">
+  <a href="index.html" class="nav-logo">
+    <img src="FCRH_logo.png" alt="First Coast Roller Hockey" />
+  </a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-overlay" id="nav-overlay"></div>
+<div class="nav-dropdown" id="nav-dropdown">
     <a href="index.html">Home</a>
     <a href="phases.html">Our Roadmap</a>
     <a href="faq.html" class="active">FAQ</a>
     <a href="map.html">Community Map</a>
     <a href="updates.html">Updates</a>
     <a href="index.html#interest" class="nav-cta">Count Me In</a>
-  </div>
-</nav>
-
+</div>
 <!-- HERO -->
 <div class="page-hero">
   <div class="hero-grid"></div>
@@ -508,7 +544,7 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-a">
-          Yes — we are actively looking for local partners and sponsors who want to be part of growing hockey in the Jacksonville area. Getting involved early means being part of something from the very beginning. Reach out to us at <a href="/cdn-cgi/l/email-protection#680e011a1b1c0b07091b1c1a0704040d1a00070b030d11280f05090104460b0705"><span class="__cf_email__" data-cfemail="fa9c9388898e99959b898e889596969f88929599919f83ba9d979b9396d4999597">[email&#160;protected]</span></a> and let's talk.
+          Yes — we are actively looking for local partners and sponsors who want to be part of growing hockey in the Jacksonville area. Getting involved early means being part of something from the very beginning. Reach out to us at <a href="mailto:firstcoastrollerhockey@gmail.com">firstcoastrollerhockey@gmail.com</a> and let's talk.
         </div>
       </div>
 
@@ -546,7 +582,7 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-a">
-          The best way is to fill out our interest form and check the box to receive updates. Everyone on the list will be the first to hear about location announcements, timeline updates, founding membership opportunities, and when league registration opens. You can also reach us directly at <a href="/cdn-cgi/l/email-protection#0d6b647f7e796e626c7e797f626161687f65626e6668744d6a606c6461236e6260"><span class="__cf_email__" data-cfemail="395f504b4a4d5a56584a4d4b5655555c4b51565a525c40795e54585055175a5654">[email&#160;protected]</span></a>.
+          The best way is to fill out our interest form and check the box to receive updates. Everyone on the list will be the first to hear about location announcements, timeline updates, founding membership opportunities, and when league registration opens. You can also reach us directly at <a href="mailto:firstcoastrollerhockey@gmail.com">firstcoastrollerhockey@gmail.com</a>.
         </div>
       </div>
 
@@ -556,7 +592,7 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-a">
-          Send us an email at <a href="/cdn-cgi/l/email-protection#12747b606166717d736166607d7e7e77607a7d7179776b52757f737b7e3c717d7f"><span class="__cf_email__" data-cfemail="94f2fde6e7e0f7fbf5e7e0e6fbf8f8f1e6fcfbf7fff1edd4f3f9f5fdf8baf7fbf9">[email&#160;protected]</span></a> — we actually read every message and will get back to you. If it's a question we're hearing a lot, we'll add it here.
+          Send us an email at <a href="mailto:firstcoastrollerhockey@gmail.com">firstcoastrollerhockey@gmail.com</a> — we actually read every message and will get back to you. If it's a question we're hearing a lot, we'll add it here.
         </div>
       </div>
 
@@ -590,5 +626,33 @@ function filterGroup(group, tabBtn) {
   document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
 }
 </script>
+
+<script>
+function initNav() {
+  const btn = document.getElementById('hamburger');
+  const dropdown = document.getElementById('nav-dropdown');
+  const overlay = document.getElementById('nav-overlay');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('open');
+    dropdown.classList.toggle('open');
+    overlay.classList.toggle('open');
+  });
+  overlay.addEventListener('click', () => {
+    btn.classList.remove('open');
+    dropdown.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+  dropdown.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      btn.classList.remove('open');
+      dropdown.classList.remove('open');
+      overlay.classList.remove('open');
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded', initNav);
+</script>
+
 </body>
 </html>
